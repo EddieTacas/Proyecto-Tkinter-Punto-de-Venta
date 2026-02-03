@@ -1,0 +1,250 @@
+{
+    "personaId": "6955d7ceba1b0d00151fa60d",
+    "personaToken": "DEV_U2PgAfc6lbZ5Bdoe0JFRNL6MTDsAUVTcarvmdDWT4q9CeuIE5O3EgH0fhz60oLdH",
+    "fileName": "10740503761-03-B001-00000002",
+    "documentBody": {
+        "cbc:UBLVersionID": {
+            "_text": "2.1"
+        },
+        "cbc:CustomizationID": {
+            "_text": "2.0"
+        },
+        "cbc:ID": {
+            "_text": "B001-00000002"
+        },
+        "cbc:IssueDate": {
+            "_text": "2026-01-01"
+        },
+        "cbc:IssueTime": {
+            "_text": "22:08:58"
+        },
+        "cbc:InvoiceTypeCode": {
+            "_attributes": {
+                "listID": "0101"
+            },
+            "_text": "03"
+        },
+        "cbc:Note": [
+            {
+                "_text": "TREINTA CON 00/100 SOLES",
+                "_attributes": {
+                    "languageLocaleID": "1000"
+                }
+            }
+        ],
+        "cbc:DocumentCurrencyCode": {
+            "_text": "PEN"
+        },
+        "cac:AccountingSupplierParty": {
+            "cac:Party": {
+                "cac:PartyIdentification": {
+                    "cbc:ID": {
+                        "_attributes": {
+                            "schemeID": "6"
+                        },
+                        "_text": "10740503761"
+                    }
+                },
+                "cac:PartyName": {
+                    "cbc:Name": {
+                        "_text": "EXP COMPANY"
+                    }
+                },
+                "cac:PartyLegalEntity": {
+                    "cbc:RegistrationName": {
+                        "_text": "TACAS QUINCHO EDDIE JHERSSON"
+                    },
+                    "cac:RegistrationAddress": {
+                        "cbc:AddressTypeCode": {
+                            "_text": "0000"
+                        },
+                        "cac:AddressLine": {
+                            "cbc:Line": {
+                                "_text": "JR. AMERICA NRO. 489 URB. EL PORVENIR"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "cac:AccountingCustomerParty": {
+            "cac:Party": {
+                "cac:PartyIdentification": {
+                    "cbc:ID": {
+                        "_attributes": {
+                            "schemeID": "1"
+                        },
+                        "_text": "00000000"
+                    }
+                },
+                "cac:PartyLegalEntity": {
+                    "cbc:RegistrationName": {
+                        "_text": "---"
+                    },
+                    "cac:RegistrationAddress": {
+                        "cac:AddressLine": {
+                            "cbc:Line": {
+                                "_text": "-"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "cac:TaxTotal": {
+            "cbc:TaxAmount": {
+                "_attributes": {
+                    "currencyID": "PEN"
+                },
+                "_text": 4.58
+            },
+            "cac:TaxSubtotal": [
+                {
+                    "cbc:TaxableAmount": {
+                        "_attributes": {
+                            "currencyID": "PEN"
+                        },
+                        "_text": 25.42
+                    },
+                    "cbc:TaxAmount": {
+                        "_attributes": {
+                            "currencyID": "PEN"
+                        },
+                        "_text": 4.58
+                    },
+                    "cac:TaxCategory": {
+                        "cac:TaxScheme": {
+                            "cbc:ID": {
+                                "_text": "1000"
+                            },
+                            "cbc:Name": {
+                                "_text": "IGV"
+                            },
+                            "cbc:TaxTypeCode": {
+                                "_text": "VAT"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "cac:LegalMonetaryTotal": {
+            "cbc:LineExtensionAmount": {
+                "_attributes": {
+                    "currencyID": "PEN"
+                },
+                "_text": 25.42
+            },
+            "cbc:TaxInclusiveAmount": {
+                "_attributes": {
+                    "currencyID": "PEN"
+                },
+                "_text": 30.0
+            },
+            "cbc:PayableAmount": {
+                "_attributes": {
+                    "currencyID": "PEN"
+                },
+                "_text": 30.0
+            }
+        },
+        "cac:PaymentTerms": [
+            {
+                "cbc:ID": {
+                    "_text": "FormaPago"
+                },
+                "cbc:PaymentMeansID": {
+                    "_text": "Contado"
+                }
+            }
+        ],
+        "cac:InvoiceLine": [
+            {
+                "cbc:ID": {
+                    "_text": 1
+                },
+                "cbc:InvoicedQuantity": {
+                    "_attributes": {
+                        "unitCode": "KGM"
+                    },
+                    "_text": 1.0
+                },
+                "cbc:LineExtensionAmount": {
+                    "_attributes": {
+                        "currencyID": "PEN"
+                    },
+                    "_text": 25.42
+                },
+                "cac:PricingReference": {
+                    "cac:AlternativeConditionPrice": {
+                        "cbc:PriceAmount": {
+                            "_attributes": {
+                                "currencyID": "PEN"
+                            },
+                            "_text": 30.0
+                        },
+                        "cbc:PriceTypeCode": {
+                            "_text": "01"
+                        }
+                    }
+                },
+                "cac:TaxTotal": {
+                    "cbc:TaxAmount": {
+                        "_attributes": {
+                            "currencyID": "PEN"
+                        },
+                        "_text": 4.58
+                    },
+                    "cac:TaxSubtotal": [
+                        {
+                            "cbc:TaxableAmount": {
+                                "_attributes": {
+                                    "currencyID": "PEN"
+                                },
+                                "_text": 25.42
+                            },
+                            "cbc:TaxAmount": {
+                                "_attributes": {
+                                    "currencyID": "PEN"
+                                },
+                                "_text": 4.58
+                            },
+                            "cac:TaxCategory": {
+                                "cbc:Percent": {
+                                    "_text": 18
+                                },
+                                "cbc:TaxExemptionReasonCode": {
+                                    "_text": "10"
+                                },
+                                "cac:TaxScheme": {
+                                    "cbc:ID": {
+                                        "_text": "1000"
+                                    },
+                                    "cbc:Name": {
+                                        "_text": "IGV"
+                                    },
+                                    "cbc:TaxTypeCode": {
+                                        "_text": "VAT"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                "cac:Item": {
+                    "cbc:Description": {
+                        "_text": "JERSEY 30/1 (POR KILO)"
+                    }
+                },
+                "cac:Price": {
+                    "cbc:PriceAmount": {
+                        "_attributes": {
+                            "currencyID": "PEN"
+                        },
+                        "_text": 25.4237288136
+                    }
+                }
+            }
+        ]
+    }
+}

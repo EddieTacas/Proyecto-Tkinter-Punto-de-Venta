@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\USUARIO\Mi unidad (eddiejhersson1@gmail.com)\Proyecto tkinter\test_arqueo.py", line 48, in <module>
+    test_arqueo_db()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\USUARIO\Mi unidad (eddiejhersson1@gmail.com)\Proyecto tkinter\test_arqueo.py", line 41, in test_arqueo_db
+    total = database.get_sales_total_in_range('2023-01-01 00:00:00', '2099-12-31 23:59:59', caja_id)
+  File "C:\Users\USUARIO\Mi unidad (eddiejhersson1@gmail.com)\Proyecto tkinter\database.py", line 1100, in get_sales_total_in_range
+    cur.execute(sql, (start_time, end_time, payment_method))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.OperationalError: no such column: date_time

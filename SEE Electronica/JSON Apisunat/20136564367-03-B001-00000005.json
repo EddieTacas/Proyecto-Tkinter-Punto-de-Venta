@@ -1,0 +1,228 @@
+{
+    "personaId": "67b508fe8b23b80015a088fd",
+    "personaToken": "DEV_... ---> aquí va tu 'personaToken'",
+    "fileName": "20136564367-03-B001-00000005",
+    "documentBody": {
+        "cbc:UBLVersionID": {
+            "_text": "2.1"
+        },
+        "cbc:CustomizationID": {
+            "_text": "2.0"
+        },
+        "cbc:ID": {
+            "_text": "B001-00000005"
+        },
+        "cbc:IssueDate": {
+            "_text": "2025-11-30"
+        },
+        "cbc:IssueTime": {
+            "_text": "17:40:10"
+        },
+        "cbc:InvoiceTypeCode": {
+            "_attributes": {
+                "listID": "0101"
+            },
+            "_text": "03"
+        },
+        "cbc:Note": [
+            {
+                "_text": "TREINTA Y DOS CON 00/100 SOLES",
+                "_attributes": {
+                    "languageLocaleID": "1000"
+                }
+            }
+        ],
+        "cbc:DocumentCurrencyCode": {
+            "_text": "PEN"
+        },
+        "cac:AccountingSupplierParty": {
+            "cac:Party": {
+                "cac:PartyIdentification": {
+                    "cbc:ID": {
+                        "_attributes": {
+                            "schemeID": "6"
+                        },
+                        "_text": "20136564367"
+                    }
+                },
+                "cac:PartyLegalEntity": {
+                    "cbc:RegistrationName": {
+                        "_text": "SUPERINT ADMINIST.PRIV.FONDOS DE PENSION"
+                    },
+                    "cac:RegistrationAddress": {
+                        "cbc:AddressTypeCode": {
+                            "_text": "0000"
+                        },
+                        "cac:AddressLine": {
+                            "cbc:Line": {
+                                "_text": "AV. PASEO DE LA REPUBLIC NRO. 3285 SAN ISIDRO LIMA LIMA"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "cac:AccountingCustomerParty": {
+            "cac:Party": {
+                "cac:PartyIdentification": {
+                    "cbc:ID": {
+                        "_attributes": {
+                            "schemeID": "1"
+                        },
+                        "_text": "00000000"
+                    }
+                },
+                "cac:PartyLegalEntity": {
+                    "cbc:RegistrationName": {
+                        "_text": "---"
+                    }
+                }
+            }
+        },
+        "cac:TaxTotal": {
+            "cbc:TaxAmount": {
+                "_attributes": {
+                    "currencyID": "PEN"
+                },
+                "_text": 4.88
+            },
+            "cac:TaxSubtotal": [
+                {
+                    "cbc:TaxableAmount": {
+                        "_attributes": {
+                            "currencyID": "PEN"
+                        },
+                        "_text": 27.12
+                    },
+                    "cbc:TaxAmount": {
+                        "_attributes": {
+                            "currencyID": "PEN"
+                        },
+                        "_text": 4.88
+                    },
+                    "cac:TaxCategory": {
+                        "cac:TaxScheme": {
+                            "cbc:ID": {
+                                "_text": "1000"
+                            },
+                            "cbc:Name": {
+                                "_text": "IGV"
+                            },
+                            "cbc:TaxTypeCode": {
+                                "_text": "VAT"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "cac:LegalMonetaryTotal": {
+            "cbc:LineExtensionAmount": {
+                "_attributes": {
+                    "currencyID": "PEN"
+                },
+                "_text": 27.12
+            },
+            "cbc:TaxInclusiveAmount": {
+                "_attributes": {
+                    "currencyID": "PEN"
+                },
+                "_text": 32
+            },
+            "cbc:PayableAmount": {
+                "_attributes": {
+                    "currencyID": "PEN"
+                },
+                "_text": 32
+            }
+        },
+        "cac:InvoiceLine": [
+            {
+                "cbc:ID": {
+                    "_text": 1
+                },
+                "cbc:InvoicedQuantity": {
+                    "_attributes": {
+                        "unitCode": "KGM"
+                    },
+                    "_text": 1
+                },
+                "cbc:LineExtensionAmount": {
+                    "_attributes": {
+                        "currencyID": "PEN"
+                    },
+                    "_text": 27.12
+                },
+                "cac:PricingReference": {
+                    "cac:AlternativeConditionPrice": {
+                        "cbc:PriceAmount": {
+                            "_attributes": {
+                                "currencyID": "PEN"
+                            },
+                            "_text": 32
+                        },
+                        "cbc:PriceTypeCode": {
+                            "_text": "01"
+                        }
+                    }
+                },
+                "cac:TaxTotal": {
+                    "cbc:TaxAmount": {
+                        "_attributes": {
+                            "currencyID": "PEN"
+                        },
+                        "_text": 4.88
+                    },
+                    "cac:TaxSubtotal": [
+                        {
+                            "cbc:TaxableAmount": {
+                                "_attributes": {
+                                    "currencyID": "PEN"
+                                },
+                                "_text": 27.12
+                            },
+                            "cbc:TaxAmount": {
+                                "_attributes": {
+                                    "currencyID": "PEN"
+                                },
+                                "_text": 4.88
+                            },
+                            "cac:TaxCategory": {
+                                "cbc:Percent": {
+                                    "_text": 18
+                                },
+                                "cbc:TaxExemptionReasonCode": {
+                                    "_text": "10"
+                                },
+                                "cac:TaxScheme": {
+                                    "cbc:ID": {
+                                        "_text": "1000"
+                                    },
+                                    "cbc:Name": {
+                                        "_text": "IGV"
+                                    },
+                                    "cbc:TaxTypeCode": {
+                                        "_text": "VAT"
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                },
+                "cac:Item": {
+                    "cbc:Description": {
+                        "_text": "rib colores 301"
+                    }
+                },
+                "cac:Price": {
+                    "cbc:PriceAmount": {
+                        "_attributes": {
+                            "currencyID": "PEN"
+                        },
+                        "_text": 27.1186440678
+                    }
+                }
+            }
+        ]
+    }
+}

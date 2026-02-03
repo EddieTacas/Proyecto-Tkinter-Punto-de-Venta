@@ -1,0 +1,1 @@
+Failed to send invoice: SOAP Fault: El nombre del archivo ZIP es incorrecto - Detalle: xxx.xxx.xxx value='ticket: 1764544923952 error: Validation ZIP Filename error: 20136564367-03-B001-00000005.XML'

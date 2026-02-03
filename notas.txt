@@ -1,0 +1,25 @@
+#estas notas son para recordar los comandos de ttkbootstrap que no afecte en la programación
+SelectAll on focus-> seleccionar todo al enfocar
+focus-> enfocar
+TabOrder -> orden de tabulación 
+auto‑scrolling to widget focus-> desplazamiento automático al widget enfocado
+messagebox.showinfo
+messagebox.showerror
+WIDTH→ ejemplo: si el nombre es muy largo, lo corta en varias líneas para que no se desborde.
+Toplevel-> ventana secundaria y cierre con .after()
+
+contraseña por defecto usuario:admin y contraseña:admin
+
+Implementada la redistribución automática (responsive) de productos al cambiar el tamaño de la ventana
+
+*Tarjeta estilo Material Design (Floating Card):
+Descripción: Un contenedor blanco con bordes redondeados (radius=15) y una "sombra suave" (soft shadow) simulada con capas de gris translúcido para dar efecto de elevación.
+*Inputs estilo Flat/Borderless (Sin Bordes):
+Descripción: Los campos de texto (Entry, Combobox) no tienen borde visible (borderwidth=0).
+Estilo: Están contenidos dentro de una forma redondeada ("píldora") con un fondo gris muy tenue (usamos #f2f2f2) para resaltar el área de escritura sutilmente sobre el fondo blanco, sin usar contornos oscuros.
+
+*En las esquinas del combobox y de los textbox se notan áreas blancas que no coinciden con el color de fondo del formulario, lo que genera un contraste visual no deseado
+
+PARA EL ENVIO DE PRUEBA DE APISUNAT
+ID 6955d7ceba1b0d00151fa60d
+CLAVE DEV_U2PgAfc6lbZ5Bdoe0JFRNL6MTDsAUVTcarvmdDWT4q9CeuIE5O3EgH0fhz60oLdH

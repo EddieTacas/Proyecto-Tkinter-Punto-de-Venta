@@ -1,0 +1,77 @@
+{
+    "5": {
+        "cart": [],
+        "total": 0,
+        "doc_type": "BOLETA DE VENTA ELECTR\u00d3NICA",
+        "payment_method": "EFECTIVO",
+        "amount_paid": "0.0",
+        "customer": {
+            "doc": "",
+            "name": "",
+            "address": "",
+            "phone": ""
+        },
+        "issuer": "TACAS QUINCHO EDDIE JHERSSON",
+        "address": "JR. AMERICA NRO. 489 URB. EL PORVENIR"
+    },
+    "3": {
+        "cart": [],
+        "total": 0,
+        "doc_type": "BOLETA DE VENTA ELECTR\u00d3NICA",
+        "payment_method": "EFECTIVO",
+        "amount_paid": "0.0",
+        "customer": {
+            "doc": "",
+            "name": "",
+            "address": "",
+            "phone": ""
+        },
+        "issuer": "TACAS QUINCHO EDDIE JHERSSON",
+        "address": "JR. AMERICA NRO. 489 URB. EL PORVENIR"
+    },
+    "4": {
+        "cart": [],
+        "total": 0,
+        "doc_type": "BOLETA DE VENTA ELECTR\u00d3NICA",
+        "payment_method": "EFECTIVO",
+        "amount_paid": "0.0",
+        "customer": {
+            "doc": "",
+            "name": "",
+            "address": "",
+            "phone": ""
+        },
+        "issuer": "TACAS QUINCHO EDDIE JHERSSON",
+        "address": "JR. AMERICA NRO. 489 URB. EL PORVENIR"
+    },
+    "2": {
+        "cart": [],
+        "total": 0,
+        "doc_type": "BOLETA DE VENTA ELECTR\u00d3NICA",
+        "payment_method": "EFECTIVO",
+        "amount_paid": "0.0",
+        "customer": {
+            "doc": "",
+            "name": "",
+            "address": "",
+            "phone": ""
+        },
+        "issuer": "TACAS QUINCHO EDDIE JHERSSON",
+        "address": "JR. AMERICA NRO. 489 URB. EL PORVENIR"
+    },
+    "1": {
+        "cart": [],
+        "total": 0,
+        "doc_type": "NOTA DE VENTA",
+        "payment_method": "EFECTIVO",
+        "amount_paid": "0.0",
+        "customer": {
+            "doc": "",
+            "name": "",
+            "address": "",
+            "phone": ""
+        },
+        "issuer": "QUINCHO PAUCAR ALBINA",
+        "address": "JR. HIPOLITO UNANUE NRO. 1350 URB. EL PORVENIR"
+    }
+}

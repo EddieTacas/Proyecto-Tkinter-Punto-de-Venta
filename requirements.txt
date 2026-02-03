@@ -1,0 +1,11 @@
+ttkbootstrap
+requests
+Pillow
+pywin32
+qrcode
+lxml
+signxml
+cryptography
+reportlab
+pandas
+openpyxl

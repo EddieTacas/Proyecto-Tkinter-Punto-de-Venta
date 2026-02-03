@@ -1,0 +1,4 @@
+lxml
+xmlsec
+requests
+reportlab

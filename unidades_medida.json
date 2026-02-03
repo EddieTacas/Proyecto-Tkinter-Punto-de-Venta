@@ -1,0 +1,327 @@
+[
+    {
+        "codigo_sunat": "ZZ",
+        "descripcion": "Servicio",
+        "simbolo_comercial": "SERV"
+    },
+    {
+        "codigo_sunat": "BX",
+        "descripcion": "Caja",
+        "simbolo_comercial": "CAJ"
+    },
+    {
+        "codigo_sunat": "GLL",
+        "descripcion": "Galon",
+        "simbolo_comercial": "GL"
+    },
+    {
+        "codigo_sunat": "GRM",
+        "descripcion": "Gramos",
+        "simbolo_comercial": "GR"
+    },
+    {
+        "codigo_sunat": "KGM",
+        "descripcion": "Kilos",
+        "simbolo_comercial": "KG"
+    },
+    {
+        "codigo_sunat": "LTR",
+        "descripcion": "Litro",
+        "simbolo_comercial": "LT"
+    },
+    {
+        "codigo_sunat": "MTR",
+        "descripcion": "Metro",
+        "simbolo_comercial": "M"
+    },
+    {
+        "codigo_sunat": "FOT",
+        "descripcion": "Pies",
+        "simbolo_comercial": "PIE"
+    },
+    {
+        "codigo_sunat": "INH",
+        "descripcion": "Pulgadas",
+        "simbolo_comercial": "INCH"
+    },
+    {
+        "codigo_sunat": "NIU",
+        "descripcion": "Unidad",
+        "simbolo_comercial": "UND"
+    },
+    {
+        "codigo_sunat": "YRD",
+        "descripcion": "Yarda",
+        "simbolo_comercial": "YD"
+    },
+    {
+        "codigo_sunat": "HUR",
+        "descripcion": "Hora",
+        "simbolo_comercial": "HR"
+    },
+    {
+        "codigo_sunat": "TNE",
+        "descripcion": "Toneladas",
+        "simbolo_comercial": "TNL"
+    },
+    {
+        "codigo_sunat": "DZN",
+        "descripcion": "Docena",
+        "simbolo_comercial": "DOC"
+    },
+    {
+        "codigo_sunat": "PK",
+        "descripcion": "Paquete",
+        "simbolo_comercial": "PQT"
+    },
+    {
+        "codigo_sunat": "MTQ",
+        "descripcion": "Metro cúbico",
+        "simbolo_comercial": "M3"
+    },
+    {
+        "codigo_sunat": "HD",
+        "descripcion": "Media docena",
+        "simbolo_comercial": "1/2 DOC"
+    },
+    {
+        "codigo_sunat": "PR",
+        "descripcion": "Par",
+        "simbolo_comercial": "PAR"
+    },
+    {
+        "codigo_sunat": "JG",
+        "descripcion": "Jarra",
+        "simbolo_comercial": "JARR"
+    },
+    {
+        "codigo_sunat": "JR",
+        "descripcion": "Frasco",
+        "simbolo_comercial": "FCO"
+    },
+    {
+        "codigo_sunat": "KT",
+        "descripcion": "Kit",
+        "simbolo_comercial": "KIT"
+    },
+    {
+        "codigo_sunat": "CH",
+        "descripcion": "Envase",
+        "simbolo_comercial": "ENV"
+    },
+    {
+        "codigo_sunat": "AV",
+        "descripcion": "Capsula",
+        "simbolo_comercial": "CAPS"
+    },
+    {
+        "codigo_sunat": "CT",
+        "descripcion": "Carton",
+        "simbolo_comercial": "CTON"
+    },
+    {
+        "codigo_sunat": "CY",
+        "descripcion": "Cilindro",
+        "simbolo_comercial": "CIL"
+    },
+    {
+        "codigo_sunat": "BE",
+        "descripcion": "Fardo",
+        "simbolo_comercial": "FARD"
+    },
+    {
+        "codigo_sunat": "BG",
+        "descripcion": "Bolsa",
+        "simbolo_comercial": "BOLS"
+    },
+    {
+        "codigo_sunat": "BJ",
+        "descripcion": "Balde",
+        "simbolo_comercial": "BALD"
+    },
+    {
+        "codigo_sunat": "SET",
+        "descripcion": "Juego",
+        "simbolo_comercial": "JGO"
+    },
+    {
+        "codigo_sunat": "BLL",
+        "descripcion": "Barril",
+        "simbolo_comercial": "BRL"
+    },
+    {
+        "codigo_sunat": "RM",
+        "descripcion": "Resma",
+        "simbolo_comercial": "RESM"
+    },
+    {
+        "codigo_sunat": "BO",
+        "descripcion": "Botellas",
+        "simbolo_comercial": "BOT"
+    },
+    {
+        "codigo_sunat": "SA",
+        "descripcion": "Saco",
+        "simbolo_comercial": "SCO"
+    },
+    {
+        "codigo_sunat": "BT",
+        "descripcion": "Tornillo",
+        "simbolo_comercial": "TORN"
+    },
+    {
+        "codigo_sunat": "C62",
+        "descripcion": "Piezas",
+        "simbolo_comercial": "PZ"
+    },
+    {
+        "codigo_sunat": "CA",
+        "descripcion": "Latas",
+        "simbolo_comercial": "LT"
+    },
+    {
+        "codigo_sunat": "CEN",
+        "descripcion": "Centenar o ciento",
+        "simbolo_comercial": "CTO"
+    },
+    {
+        "codigo_sunat": "CMT",
+        "descripcion": "Centimetro",
+        "simbolo_comercial": "CM"
+    },
+    {
+        "codigo_sunat": "CMK",
+        "descripcion": "Centimetro cuadrado",
+        "simbolo_comercial": "CM3"
+    },
+    {
+        "codigo_sunat": "CMQ",
+        "descripcion": "Centimetro cubico",
+        "simbolo_comercial": "CM2"
+    },
+    {
+        "codigo_sunat": "DZP",
+        "descripcion": "Docena de paquetes",
+        "simbolo_comercial": "DOC2"
+    },
+    {
+        "codigo_sunat": "FTK",
+        "descripcion": "Pies cuadrados",
+        "simbolo_comercial": "PIE2"
+    },
+    {
+        "codigo_sunat": "FTQ",
+        "descripcion": "Pies cubicos",
+        "simbolo_comercial": "PIE3"
+    },
+    {
+        "codigo_sunat": "GLI",
+        "descripcion": "Galon ingles",
+        "simbolo_comercial": "GL"
+    },
+    {
+        "codigo_sunat": "HT",
+        "descripcion": "Media hora",
+        "simbolo_comercial": "1/2 H"
+    },
+    {
+        "codigo_sunat": "KTM",
+        "descripcion": "Kilometro",
+        "simbolo_comercial": "KM"
+    },
+    {
+        "codigo_sunat": "KWH",
+        "descripcion": "Kilovatio hora",
+        "simbolo_comercial": "KWxH"
+    },
+    {
+        "codigo_sunat": "MWH",
+        "descripcion": "Megavatio hora",
+        "simbolo_comercial": "MWxH"
+    },
+    {
+        "codigo_sunat": "LBR",
+        "descripcion": "Libras",
+        "simbolo_comercial": "LB"
+    },
+    {
+        "codigo_sunat": "LEF",
+        "descripcion": "Hoja",
+        "simbolo_comercial": "HOJA"
+    },
+    {
+        "codigo_sunat": "MGM",
+        "descripcion": "Miligramos",
+        "simbolo_comercial": "MG"
+    },
+    {
+        "codigo_sunat": "MIL",
+        "descripcion": "Millar",
+        "simbolo_comercial": "MIL"
+    },
+    {
+        "codigo_sunat": "MLT",
+        "descripcion": "Mililitro",
+        "simbolo_comercial": "ML"
+    },
+    {
+        "codigo_sunat": "MMT",
+        "descripcion": "Milimetro",
+        "simbolo_comercial": "ML"
+    },
+    {
+        "codigo_sunat": "MMK",
+        "descripcion": "Milimetro cuadrado",
+        "simbolo_comercial": "ML2"
+    },
+    {
+        "codigo_sunat": "MMQ",
+        "descripcion": "Milimetro cubico",
+        "simbolo_comercial": "ML3"
+    },
+    {
+        "codigo_sunat": "ONZ",
+        "descripcion": "Onzas",
+        "simbolo_comercial": "ONZ"
+    },
+    {
+        "codigo_sunat": "PF",
+        "descripcion": "Paletas",
+        "simbolo_comercial": "PAL"
+    },
+    {
+        "codigo_sunat": "PG",
+        "descripcion": "Placas",
+        "simbolo_comercial": "PLAC"
+    },
+    {
+        "codigo_sunat": "RD",
+        "descripcion": "Varilla",
+        "simbolo_comercial": "VAR"
+    },
+    {
+        "codigo_sunat": "RL",
+        "descripcion": "Carrete",
+        "simbolo_comercial": "CRR"
+    },
+    {
+        "codigo_sunat": "SEC",
+        "descripcion": "Segundo",
+        "simbolo_comercial": "SEG"
+    },
+    {
+        "codigo_sunat": "ST",
+        "descripcion": "Pliego",
+        "simbolo_comercial": "PLGO"
+    },
+    {
+        "codigo_sunat": "TU",
+        "descripcion": "Tubos",
+        "simbolo_comercial": "TB"
+    },
+    {
+        "codigo_sunat": "UM",
+        "descripcion": "Millon",
+        "simbolo_comercial": "MILL"
+    }
+]

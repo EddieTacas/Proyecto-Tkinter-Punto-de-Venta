@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2">
+  <ext:UBLExtensions>
+    <ext:UBLExtension>
+      <ext:ExtensionContent><ds:Signature>
+<ds:SignedInfo>
+<ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+<ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+<ds:Reference URI="">
+<ds:Transforms>
+<ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+</ds:Transforms>
+<ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+<ds:DigestValue>ZrEndnEzzn6/V1P5Ltea/Tp8ZnI=</ds:DigestValue>
+</ds:Reference>
+</ds:SignedInfo>
+<ds:SignatureValue>H7G/RtALcA4Ci+7W7uHyusmfOpHfbIgTZNDBDU4U27YytdhseI9joeKDlAvmEF1r
+q8n0T0y/NzyNAvgMjqjIvcHqY/hPa7B1VqnHYuWJEbwTc5tpCR1eVQtS1X+e+msB
+0stOTWwGDLfKkOchA1DHGLNyBzUEhgwmUnLzmBxf9xubokbxCs0r0eO/m2eLa88q
+S6JC0SqOgJJYqBhvg5IqRPiQVCLXO82GWdrcZhZvlSSq/p2chiZM6CD7MiOYD5sg
+sWMN1ZkMd3pOr4kn6XYtSpK43P4JIdPGQ28UJRvjZ864KPtziN6W9AMX5ZJdw5XK
+CyNFA4ycppzD/QA9oafU5w==</ds:SignatureValue>
+<ds:KeyInfo>
+<ds:X509Data>
+<ds:X509Certificate>MIIFBzCCA++gAwIBAgIIXw+G2jsBK/UwDQYJKoZIhvcNAQELBQAwggENMRswGQYK
+CZImiZPyLGQBGRYLTExBTUEuUEUgU0ExCzAJBgNVBAYTAlBFMQ0wCwYDVQQIDARM
+SU1BMQ0wCwYDVQQHDARMSU1BMRgwFgYDVQQKDA9UVSBFTVBSRVNBIFMuQS4xRTBD
+BgNVBAsMPEROSSA5OTk5OTk5IFJVQyAyMDEzNjU2NDM2NyAtIENFUlRJRklDQURP
+IFBBUkEgREVNT1NUUkFDScOTTjFEMEIGA1UEAww7Tk9NQlJFIFJFUFJFU0VOVEFO
+VEUgTEVHQUwgLSBDRVJUSUZJQ0FETyBQQVJBIERFTU9TVFJBQ0nDk04xHDAaBgkq
+hkiG9w0BCQEWDWRlbW9AbGxhbWEucGUwHhcNMjUxMTMwMjMwODE4WhcNMjcxMTMw
+MjMwODE4WjCCAQ0xGzAZBgoJkiaJk/IsZAEZFgtMTEFNQS5QRSBTQTELMAkGA1UE
+BhMCUEUxDTALBgNVBAgMBExJTUExDTALBgNVBAcMBExJTUExGDAWBgNVBAoMD1RV
+IEVNUFJFU0EgUy5BLjFFMEMGA1UECww8RE5JIDk5OTk5OTkgUlVDIDIwMTM2NTY0
+MzY3IC0gQ0VSVElGSUNBRE8gUEFSQSBERU1PU1RSQUNJw5NOMUQwQgYDVQQDDDtO
+T01CUkUgUkVQUkVTRU5UQU5URSBMRUdBTCAtIENFUlRJRklDQURPIFBBUkEgREVN
+T1NUUkFDScOTTjEcMBoGCSqGSIb3DQEJARYNZGVtb0BsbGFtYS5wZTCCASIwDQYJ
+KoZIhvcNAQEBBQADggEPADCCAQoCggEBAMfhJ5pRJVTOOxcAPi8CmlSHCvm23QD6
+VBIazghESpSMmSpoHPwVR3cfdH8Kvs/j2ZRtoTqp1VH+t4dPRVxz1NW6ErZxH3lT
+kp1qG6xkQZ4D/bQAB3slTQVQOZopViHfRDCC+uocblpmkIaJR/rpcO4TIgHz5QAt
+vxD2CwV26FD7tdx2kWh+EOzmiXUddvnTPbEwTtI+rEK9Rh6mIuXrugFkBHhmvaX9
+ARB2P4a48qFd7PjRbNxQ/eC8KU/e3n1nfXM0gyuLMdRQSHPxGKg4inoqRG5JAczJ
+Bjy6rBh0K8671ONAnnmo0YjH0rzgnQ8674QKy76meuZb9wDQwGRxhwUCAwEAAaNn
+MGUwHQYDVR0OBBYEFPsRfcOeRZFDkfbuXOywQnKVIxYuMB8GA1UdIwQYMBaAFPsR
+fcOeRZFDkfbuXOywQnKVIxYuMBMGA1UdJQQMMAoGCCsGAQUFBwMBMA4GA1UdDwEB
+/wQEAwIHgDANBgkqhkiG9w0BAQsFAAOCAQEAGsWszKpmgpOWi9NINwASCBw6l7wd
+p/2Ju/DN1tOu2XF0WgBUjdBsZtO90lO0CX+F4yL6+I49Kc35f8yPAGB8Rr21uW5f
+9NNd+611ukil4koDuXm4K6KTt1dxp8+VnMd5L1KHVjFbYSqxu+GxN31/Fznec5kW
+95oRr4jUwCsJxCNB9yit1FeZ0UA8jSrljBQz50SzwWiGdeKd3RI0tNBnAzuiljF7
+U2rvN9zWzZs/1n19W3UklmQH2J3sWskVmtbvxeB2151rrDjFuLV7LCJImqq6M/W8
+JO1yyWv/hL9W1KygBR/khLKNU436B7Rf59w9douRNUEOGUZoBM4HaKgE4A==
+</ds:X509Certificate>
+</ds:X509Data>
+</ds:KeyInfo>
+</ds:Signature></ext:ExtensionContent>
+    </ext:UBLExtension>
+  </ext:UBLExtensions>
+  <cbc:UBLVersionID>2.1</cbc:UBLVersionID>
+  <cbc:CustomizationID>2.0</cbc:CustomizationID>
+  <cbc:ID>B001-00000005</cbc:ID>
+  <cbc:IssueDate>2025-11-30</cbc:IssueDate>
+  <cbc:IssueTime>17:40:10</cbc:IssueTime>
+  <cbc:InvoiceTypeCode listID="0101">03</cbc:InvoiceTypeCode>
+  <cbc:Note languageLocaleID="1000">TREINTA Y DOS CON 00/100 SOLES</cbc:Note>
+  <cbc:DocumentCurrencyCode>PEN</cbc:DocumentCurrencyCode>
+  <cac:Signature>
+    <cbc:ID>20136564367</cbc:ID>
+    <cac:SignatoryParty>
+      <cac:PartyIdentification>
+        <cbc:ID>20136564367</cbc:ID>
+      </cac:PartyIdentification>
+      <cac:PartyName>
+        <cbc:Name>SUPERINT ADMINIST.PRIV.FONDOS DE PENSION</cbc:Name>
+      </cac:PartyName>
+    </cac:SignatoryParty>
+    <cac:DigitalSignatureAttachment>
+      <cac:ExternalReference>
+        <cbc:URI>#SignatureSP</cbc:URI>
+      </cac:ExternalReference>
+    </cac:DigitalSignatureAttachment>
+  </cac:Signature>
+  <cac:AccountingSupplierParty>
+    <cac:Party>
+      <cac:PartyIdentification>
+        <cbc:ID schemeID="6">20136564367</cbc:ID>
+      </cac:PartyIdentification>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>SUPERINT ADMINIST.PRIV.FONDOS DE PENSION</cbc:RegistrationName>
+        <cac:RegistrationAddress>
+          <cbc:AddressTypeCode>0000</cbc:AddressTypeCode>
+          <cac:AddressLine>
+            <cbc:Line>AV. PASEO DE LA REPUBLIC NRO. 3285 SAN ISIDRO LIMA LIMA</cbc:Line>
+          </cac:AddressLine>
+        </cac:RegistrationAddress>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <cac:Party>
+      <cac:PartyIdentification>
+        <cbc:ID schemeID="1">00000000</cbc:ID>
+      </cac:PartyIdentification>
+      <cac:PartyLegalEntity>
+        <cbc:RegistrationName>---</cbc:RegistrationName>
+        <cac:RegistrationAddress>
+          <cac:AddressLine>
+            <cbc:Line/>
+          </cac:AddressLine>
+        </cac:RegistrationAddress>
+      </cac:PartyLegalEntity>
+    </cac:Party>
+  </cac:AccountingCustomerParty>
+  <cac:TaxTotal>
+    <cbc:TaxAmount currencyID="PEN">4.88</cbc:TaxAmount>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="PEN">27.12</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="PEN">4.88</cbc:TaxAmount>
+      <cac:TaxCategory>
+        <cac:TaxScheme>
+          <cbc:ID>1000</cbc:ID>
+          <cbc:Name>IGV</cbc:Name>
+          <cbc:TaxTypeCode>VAT</cbc:TaxTypeCode>
+        </cac:TaxScheme>
+      </cac:TaxCategory>
+    </cac:TaxSubtotal>
+  </cac:TaxTotal>
+  <cac:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="PEN">27.12</cbc:LineExtensionAmount>
+    <cbc:TaxInclusiveAmount currencyID="PEN">32.00</cbc:TaxInclusiveAmount>
+    <cbc:PayableAmount currencyID="PEN">32.00</cbc:PayableAmount>
+  </cac:LegalMonetaryTotal>
+  <cac:InvoiceLine>
+    <cbc:ID>1</cbc:ID>
+    <cbc:InvoicedQuantity unitCode="KGM">1.0</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="PEN">27.12</cbc:LineExtensionAmount>
+    <cac:PricingReference>
+      <cac:AlternativeConditionPrice>
+        <cbc:PriceAmount currencyID="PEN">32.00</cbc:PriceAmount>
+        <cbc:PriceTypeCode>01</cbc:PriceTypeCode>
+      </cac:AlternativeConditionPrice>
+    </cac:PricingReference>
+    <cac:TaxTotal>
+      <cbc:TaxAmount currencyID="PEN">4.88</cbc:TaxAmount>
+      <cac:TaxSubtotal>
+        <cbc:TaxableAmount currencyID="PEN">27.12</cbc:TaxableAmount>
+        <cbc:TaxAmount currencyID="PEN">4.88</cbc:TaxAmount>
+        <cac:TaxCategory>
+          <cbc:Percent>18.0</cbc:Percent>
+          <cbc:TaxExemptionReasonCode>10</cbc:TaxExemptionReasonCode>
+          <cac:TaxScheme>
+            <cbc:ID>1000</cbc:ID>
+            <cbc:Name>IGV</cbc:Name>
+            <cbc:TaxTypeCode>VAT</cbc:TaxTypeCode>
+          </cac:TaxScheme>
+        </cac:TaxCategory>
+      </cac:TaxSubtotal>
+    </cac:TaxTotal>
+    <cac:Item>
+      <cbc:Description>rib colores 301</cbc:Description>
+    </cac:Item>
+    <cac:Price>
+      <cbc:PriceAmount currencyID="PEN">27.1186440678</cbc:PriceAmount>
+    </cac:Price>
+  </cac:InvoiceLine>
+</Invoice>
