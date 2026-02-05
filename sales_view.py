@@ -12,6 +12,7 @@ import io
 from PIL import Image
 import qrcode
 import utils
+import state_manager
 
 try:
     import win32print
@@ -51,28 +52,18 @@ class SalesView(ttk.Frame):
         self.rowconfigure(1, weight=1)
 
         # --- Estilos personalizados con ttkbootstrap ---
+        # --- Estilos personalizados con ttkbootstrap ---
         style = ttk.Style.get_instance()
-        style.configure('SalesView.TFrame', background=COLOR_PRIMARY_DARK)
-        style.configure('TLabel', font=(FONT_FAMILY, FONT_SIZE_NORMAL), foreground=COLOR_TEXT_LIGHT, background=COLOR_PRIMARY_DARK)
-        style.configure('TEntry', font=(FONT_FAMILY, FONT_SIZE_NORMAL), fieldbackground="#2E3338", foreground=COLOR_TEXT_LIGHT, bordercolor=COLOR_ACCENT_BLUE)
-        style.map('TEntry', fieldbackground=[('focus', '#3A4045')])
-        style.configure('TCombobox', font=(FONT_FAMILY, FONT_SIZE_NORMAL), fieldbackground="#2E3338", foreground=COLOR_TEXT_LIGHT, selectbackground="#2E3338", selectforeground=COLOR_TEXT_LIGHT, bordercolor=COLOR_ACCENT_BLUE)
-        style.map('TCombobox', fieldbackground=[('readonly', '#2E3338'), ('focus', '#3A4045')])
-        style.configure('Treeview', background=COLOR_SECONDARY_DARK, fieldbackground=COLOR_SECONDARY_DARK, foreground=COLOR_TEXT_LIGHT, bordercolor=COLOR_ACCENT_BLUE)
-        style.map('Treeview', background=[('selected', COLOR_ACCENT_BLUE)], foreground=[('selected', COLOR_TEXT_LIGHT)])
-        style.configure('Treeview.Heading', font=(FONT_FAMILY, FONT_SIZE_NORMAL, 'bold'), background=COLOR_ACCENT_BLUE, foreground=COLOR_TEXT_LIGHT)
-        style.configure('Custom.TButton', font=(FONT_FAMILY, FONT_SIZE_NORMAL), background=COLOR_BUTTON_SECONDARY, foreground=COLOR_TEXT_LIGHT)
-        style.map('Custom.TButton', background=[('active', '#555A60')])
-        style.configure('Large.TLabel', font=(FONT_FAMILY, FONT_SIZE_LARGE, 'bold'), foreground=COLOR_TEXT_LIGHT, background=COLOR_PRIMARY_DARK)
-        style.configure('Success.Large.TLabel', font=(FONT_FAMILY, FONT_SIZE_LARGE, 'bold'), foreground=COLOR_TOTAL_CHANGE, background=COLOR_PRIMARY_DARK)
-        style.configure('Header.TLabel', font=(FONT_FAMILY, FONT_SIZE_HEADER, 'bold'), foreground=COLOR_ACCENT_BLUE, background=COLOR_PRIMARY_DARK)
-        style.configure('TLabelframe', background=COLOR_SECONDARY_DARK, foreground=COLOR_TEXT_LIGHT, bordercolor=COLOR_ACCENT_BLUE)
-        style.configure('TLabelframe.Label', background=COLOR_SECONDARY_DARK, foreground=COLOR_TEXT_LIGHT)
-        style.configure('TFrame', background=COLOR_PRIMARY_DARK) # Default frame background
-        style.configure('info.TLabel', background=COLOR_PRIMARY_DARK, foreground=COLOR_ACCENT_BLUE) # For stock label
-
-        style.map('Treeview', background=[('selected', COLOR_ACCENT_BLUE), ('!selected', [('evenrow', COLOR_SECONDARY_DARK), ('oddrow', '#23272A')])])
-        style.map('Treeview.Heading', background=[('active', COLOR_ACCENT_BLUE)])
+        
+        # Eliminadas configuraciones globales que forzaban modo oscuro en inputs y labels
+        style.configure('SalesView.TFrame') 
+        
+        # Estilos personalizados específicos (sin forzar background global)
+        style.configure('Custom.TButton', font=(FONT_FAMILY, FONT_SIZE_NORMAL))
+        style.configure('Large.TLabel', font=(FONT_FAMILY, FONT_SIZE_LARGE, 'bold'))
+        style.configure('Success.Large.TLabel', font=(FONT_FAMILY, FONT_SIZE_LARGE, 'bold'), foreground=COLOR_TOTAL_CHANGE)
+        style.configure('Header.TLabel', font=(FONT_FAMILY, FONT_SIZE_HEADER, 'bold'), foreground=COLOR_ACCENT_BLUE)
+        style.configure('info.TLabel', foreground=COLOR_ACCENT_BLUE)
 
         # --- Inicialización de variables ---
         self.products = {}
@@ -113,7 +104,8 @@ class SalesView(ttk.Frame):
         self.load_issuers_from_db()
         # self.load_products_from_db() # Moved inside load_issuers_from_db or called after setting issuer
         
-        self.product_combo.focus_set()
+        self.load_state()
+        self.after(200, lambda: self.product_combo.focus_set())
         self.update_ticket_preview()
 
     def load_units_of_measure(self):
@@ -168,7 +160,7 @@ class SalesView(ttk.Frame):
         left_pane_container.columnconfigure(0, weight=1)
 
         # Canvas y Scrollbar
-        canvas = tk.Canvas(left_pane_container, background=COLOR_PRIMARY_DARK, highlightthickness=0)
+        canvas = tk.Canvas(left_pane_container, highlightthickness=0)
         scrollbar = ttk.Scrollbar(left_pane_container, orient="vertical", command=canvas.yview)
         
         # Frame scrollable dentro del canvas
@@ -309,7 +301,7 @@ class SalesView(ttk.Frame):
         total_frame.grid(row=0, column=0, sticky="ew")
         total_frame.columnconfigure(1, weight=1)
 
-        self.total_label = ttk.Label(total_frame, text="Total: S/ 0.00", style="Success.Large.TLabel", background=COLOR_PRIMARY_DARK, foreground=COLOR_TOTAL_CHANGE)
+        self.total_label = ttk.Label(total_frame, text="Total: S/ 0.00", style="Success.Large.TLabel", foreground=COLOR_TOTAL_CHANGE)
         self.total_label.grid(row=0, column=0, columnspan=2, sticky="w", pady=(5, 10))
         
         ttk.Label(total_frame, text="Medio de Pago 1:").grid(row=1, column=0, sticky="w", pady=3)
@@ -404,7 +396,7 @@ class SalesView(ttk.Frame):
         obs_frame = ttk.Labelframe(center_pane, text="Observaciones", padding=(10,5))
         obs_frame.grid(row=2, column=0, columnspan=2, sticky="ew", pady=(10,0))
         obs_frame.columnconfigure(0, weight=1)
-        self.observations_text = tk.Text(obs_frame, height=3, font=(FONT_FAMILY, 10), relief="solid", borderwidth=1, background=COLOR_PRIMARY_DARK, foreground=COLOR_TEXT_LIGHT, insertbackground=COLOR_TEXT_LIGHT)
+        self.observations_text = tk.Text(obs_frame, height=3, font=(FONT_FAMILY, 10), relief="solid", borderwidth=1)
         self.observations_text.grid(row=0, column=0, sticky="ew")
         self.observations_text.bind("<KeyRelease>", self._text_to_uppercase)
 
@@ -452,7 +444,7 @@ class SalesView(ttk.Frame):
         ticket_container.rowconfigure(0, weight=1)
         ticket_container.columnconfigure(0, weight=1)
 
-        self.ticket_preview = tk.Text(ticket_container, wrap="none", font=("Consolas", 9), width=42, relief="flat", background=COLOR_PRIMARY_DARK, foreground=COLOR_TEXT_LIGHT)
+        self.ticket_preview = tk.Text(ticket_container, wrap="none", font=("Consolas", 9), width=42, relief="flat")
         self.ticket_preview.grid(row=0, column=0, sticky="nsew")
         self.ticket_preview.config(state="disabled")
         
@@ -544,6 +536,11 @@ class SalesView(ttk.Frame):
         self.price_entry.bind("<Return>", lambda e: self.unit_of_measure_combo.focus_set())
         self.price_entry.bind("<FocusIn>", lambda e: self.price_entry.select_range(0, 'end'))
         self.add_button.bind("<Return>", lambda e: (self.add_to_cart(), "break")[1])
+    
+        # Autosave Hooks
+        for w in [self.customer_doc_entry, self.customer_name_combo, self.customer_address_entry, self.customer_phone_entry, self.doc_type_combo, self.payment_method_combo]:
+            w.bind('<FocusOut>', self.save_state, add="+")
+        self.issuer_combo.bind("<<ComboboxSelected>>", lambda e: self.save_state(), add="+")
         
     def _setup_placeholder(self, entry, placeholder_text):
         entry.insert(0, placeholder_text)
@@ -762,6 +759,7 @@ class SalesView(ttk.Frame):
         self.customer_address_var.set(customer_data[4])
         self.customer_doc_entry.focus_set()
         self.customer_doc_entry.select_range(0, 'end')
+        self.save_state()
 
     def fetch_customer_data(self, doc):
         # Usar el nuevo cliente de API
@@ -1683,6 +1681,7 @@ class SalesView(ttk.Frame):
 
         self.calculate_change()
         self.update_ticket_preview()
+        self.save_state()
 
     def update_datetime(self):
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -2156,6 +2155,70 @@ class SalesView(ttk.Frame):
 
         import cash_count_view
         cash_count_view.CashCountWindow(self, self.caja_id)
+
+    def save_state(self, event=None):
+        try:
+            cart_data = []
+            for item in self.cart:
+                cart_data.append(item)
+            
+            data = {
+                "cart": cart_data,
+                "total": self.total,
+                "doc_type": self.doc_type_var.get(),
+                "payment_method": self.payment_method_var.get(),
+                "amount_paid": self.amount_paid_var.get(),
+                "payment_method2": self.payment_method_var2.get(),
+                "amount_paid2": self.amount_paid_var2.get(),
+                "customer": {
+                    "doc": self.customer_doc_var.get(),
+                    "name": self.customer_name_var.get(),
+                    "address": self.customer_address_var.get(),
+                    "phone": self.customer_phone_var.get()
+                },
+                "issuer": self.issuer_var.get(),
+                "address": self.address_var.get()
+            }
+            state_manager.save_box_state(self.caja_id, data)
+        except Exception as e:
+            print(f"Error saving state: {e}")
+
+    def load_state(self):
+        try:
+            states = state_manager.load_all_states()
+            if str(self.caja_id) in states:
+                data = states[str(self.caja_id)]
+                
+                self.doc_type_var.set(data.get("doc_type", "NOTA DE VENTA"))
+                self.payment_method_var.set(data.get("payment_method", "EFECTIVO"))
+                self.amount_paid_var.set(data.get("amount_paid", 0.0))
+                self.payment_method_var2.set(data.get("payment_method2", "NINGUNO"))
+                self.amount_paid_var2.set(data.get("amount_paid2", 0.0))
+                self.issuer_var.set(data.get("issuer", ""))
+                self.address_var.set(data.get("address", ""))
+                
+                cust = data.get("customer", {})
+                self.customer_doc_var.set(cust.get("doc", ""))
+                self.customer_name_var.set(cust.get("name", ""))
+                self.customer_address_var.set(cust.get("address", ""))
+                self.customer_phone_var.set(cust.get("phone", ""))
+                
+                self.cart = data.get("cart", [])
+                
+                for item in self.cart_tree.get_children():
+                    self.cart_tree.delete(item)
+                    
+                for item in self.cart:
+                    name = item.get('name', '')
+                    qty = item.get('quantity', 0)
+                    um = item.get('unit_of_measure', 'NIU')
+                    price = item.get('price', 0.0)
+                    sub = item.get('subtotal', 0.0)
+                    self.cart_tree.insert("", "end", values=(name, f"{qty:.2f}", um, f"{price:.2f}", f"{sub:.2f}"))
+                
+                self.update_total()
+        except Exception as e:
+            print(f"Error loading state: {e}")
 
 class SalesWindow(ttk.Toplevel):
     """Ventana para alojar las pestañas de vistas de ventas."""
