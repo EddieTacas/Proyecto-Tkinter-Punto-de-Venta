@@ -82,7 +82,7 @@ class ReportsView(ttk.Toplevel):
         # Estilos
         style = ttk.Style.get_instance()
         style.configure('TLabel', font=(FONT_FAMILY, FONT_SIZE_NORMAL), foreground=COLOR_TEXT_LIGHT, background=COLOR_PRIMARY_DARK)
-        style.configure('Treeview', background="white", fieldbackground="white", foreground="black", bordercolor="#dddddd")
+        style.configure('Treeview', background=COLOR_SECONDARY_DARK, fieldbackground=COLOR_SECONDARY_DARK, foreground=COLOR_TEXT_LIGHT, bordercolor="#444444")
         style.map('Treeview', background=[('selected', COLOR_ACCENT_BLUE)], foreground=[('selected', 'white')])
         # Header Color #0a2240 as requested
         style.configure('Treeview.Heading', font=(FONT_FAMILY, FONT_SIZE_NORMAL, 'bold'), background="#0a2240", foreground="white")
@@ -122,7 +122,9 @@ class ReportsView(ttk.Toplevel):
 
         # Helper for rounded widgets
         def create_rounded_widget(parent, widget_class, variable=None, width=150, **kwargs):
-            container = tk.Canvas(parent, bg="white", height=35, width=width, highlightthickness=0)
+            # Dynamic Canvas BG
+            c_bg = "#2c3e50" if "Dark" in config_manager.load_setting("system_theme", "Dark") else "white"
+            container = tk.Canvas(parent, bg=c_bg, height=35, width=width, highlightthickness=0)
             
             style_name = 'Borderless.TEntry'
             
@@ -142,7 +144,11 @@ class ReportsView(ttk.Toplevel):
                  widget = widget_class(container, textvariable=variable, width=20, style=style_name, **kwargs)
 
             # Draw Rounded Rect
-            bg_fill = "white"
+            bg_fill = COLOR_SECONDARY_DARK if "Dark" in config_manager.load_setting("system_theme", "Dark") else "white"
+            # For inputs, we might want a slightly different color than the card background
+            if "Dark" in config_manager.load_setting("system_theme", "Dark"):
+                 bg_fill = "#2c3e50" # Darker input background
+
             
             def _draw_bg(e=None):
                 w = container.winfo_width()
@@ -184,20 +190,25 @@ class ReportsView(ttk.Toplevel):
         # Define Styles (Aggressive Border Hiding)
         # Combobox
         style.configure('Borderless.TCombobox', borderwidth=0, relief='flat', arrowsize=15)
+        # Note: Map colors should align with bg_fill above
+        input_bg = "#2c3e50" if "Dark" in config_manager.load_setting("system_theme", "Dark") else "white"
+        input_fg = "white" if "Dark" in config_manager.load_setting("system_theme", "Dark") else "black"
+        
         style.map('Borderless.TCombobox', 
-                  fieldbackground=[('readonly','white'), ('active', 'white'), ('focus', 'white')], 
-                  background=[('readonly','white')], 
-                  bordercolor=[('focus', 'white'), ('!disabled', 'white')],
-                  lightcolor=[('focus', 'white'), ('!disabled', 'white')],
-                  darkcolor=[('focus', 'white'), ('!disabled', 'white')])
+                  fieldbackground=[('readonly', input_bg), ('active', input_bg), ('focus', input_bg)], 
+                  background=[('readonly', input_bg)], 
+                  bordercolor=[('focus', input_bg), ('!disabled', input_bg)],
+                  lightcolor=[('focus', input_bg), ('!disabled', input_bg)],
+                  darkcolor=[('focus', input_bg), ('!disabled', input_bg)],
+                  foreground=[('readonly', input_fg)])
         
         # Entry
-        style.configure('Borderless.TEntry', fieldbackground='white', borderwidth=0, relief='flat', highlightthickness=0)
+        style.configure('Borderless.TEntry', fieldbackground=input_bg, foreground=input_fg, borderwidth=0, relief='flat', highlightthickness=0)
         style.map('Borderless.TEntry', 
-                  fieldbackground=[('focus','white'), ('!disabled', 'white')],
-                  bordercolor=[('focus', 'white'), ('!disabled', 'white')],
-                  lightcolor=[('focus', 'white'), ('!disabled', 'white')],
-                  darkcolor=[('focus', 'white'), ('!disabled', 'white')])
+                  fieldbackground=[('focus', input_bg), ('!disabled', input_bg)],
+                  bordercolor=[('focus', input_bg), ('!disabled', input_bg)],
+                  lightcolor=[('focus', input_bg), ('!disabled', input_bg)],
+                  darkcolor=[('focus', input_bg), ('!disabled', input_bg)])
 
         # --- Header ---
         # Align left (anchor="w")
@@ -219,26 +230,27 @@ class ReportsView(ttk.Toplevel):
              
              # Soft Shadow (Layered)
              # Key shadow
-             draw.rounded_rectangle((3, 5, w-3, h-1), radius=15, fill="#ccd1d9") 
+             draw.rounded_rectangle((3, 5, w-3, h-1), radius=15, fill="#111111") 
              # Ambient shadow
-             draw.rounded_rectangle((2, 2, w-2, h-2), radius=15, fill="#e2e6ea")
+             draw.rounded_rectangle((2, 2, w-2, h-2), radius=15, fill="#1a1a1a")
              
-             # Main Card Body (White)
-             draw.rounded_rectangle((0, 0, w-5, h-5), radius=15, fill="white")
+             # Main Card Body
+             draw.rounded_rectangle((0, 0, w-5, h-5), radius=15, fill=COLOR_SECONDARY_DARK)
              
              bg = ImageTk.PhotoImage(img)
              self.filter_card._bg = bg
-             self.filter_card.create_image(0,0, image=bg, anchor="nw", tags="bg")
-             self.filter_card.tag_lower("bg")
+             if self.filter_card.winfo_exists():
+                self.filter_card.create_image(0,0, image=bg, anchor="nw", tags="bg")
+                self.filter_card.tag_lower("bg")
         # Custom Responsive Layout Manager
         self.filter_items = []
-        filter_row = tk.Frame(self.filter_card, bg="white")
+        filter_row = tk.Frame(self.filter_card, bg=COLOR_SECONDARY_DARK)
         # Store window ID to resize it later
         self.filter_row_window = self.filter_card.create_window(20, 20, window=filter_row, anchor="nw")
 
         def create_filter_group(label_text, widget_class, var=None, width=150, is_date=False):
-            frame = tk.Frame(filter_row, bg="white")
-            lbl = tk.Label(frame, text=label_text, bg="white", font=(FONT_FAMILY, 10, "bold"))
+            frame = tk.Frame(filter_row, bg=COLOR_SECONDARY_DARK)
+            lbl = tk.Label(frame, text=label_text, bg=COLOR_SECONDARY_DARK, fg=COLOR_TEXT_LIGHT, font=(FONT_FAMILY, 10, "bold"))
             lbl.pack(side="left", padx=(0,5))
             
             if is_date:
@@ -327,10 +339,11 @@ class ReportsView(ttk.Toplevel):
             draw = ImageDraw.Draw(img)
             
             # Shadows
-            draw.rounded_rectangle((3, 5, w-3, h-1), radius=15, fill="#ccd1d9") 
-            draw.rounded_rectangle((2, 2, w-2, h-2), radius=15, fill="#e2e6ea")
+            # Dark Mode Shadows need to be subtle black, not gray
+            draw.rounded_rectangle((3, 5, w-3, h-1), radius=15, fill="#111111") 
+            draw.rounded_rectangle((2, 2, w-2, h-2), radius=15, fill="#1a1a1a")
             # Card Body
-            draw.rounded_rectangle((0, 0, w-5, h-5), radius=15, fill="white")
+            draw.rounded_rectangle((0, 0, w-5, h-5), radius=15, fill=COLOR_SECONDARY_DARK)
             
             bg = ImageTk.PhotoImage(img)
             self.filter_card._bg = bg # Keep reference
@@ -344,9 +357,9 @@ class ReportsView(ttk.Toplevel):
 
         # --- Configuración de Estilo Blanco ---
         style = ttk.Style()
-        style.configure("White.TFrame", background="white")
-        style.configure("White.TPanedwindow", background="white")
-        self.configure(bg="white")
+        style.configure("White.TFrame", background=COLOR_PRIMARY_DARK)
+        style.configure("White.TPanedwindow", background=COLOR_PRIMARY_DARK)
+        self.configure(bg=COLOR_PRIMARY_DARK)
 
         # --- PanedWindow para dividir la vista ---
         main_paned_window = ttk.Panedwindow(self, orient=HORIZONTAL, style="White.TPanedwindow")
@@ -362,14 +375,14 @@ class ReportsView(ttk.Toplevel):
         # Helper for Floating Cards
         def create_floating_card_frame(parent_pane, title):
             # Wrapper frame for the pane
-            wrapper = tk.Frame(parent_pane, bg="white", bd=0, highlightthickness=0) 
+            wrapper = tk.Frame(parent_pane, bg=COLOR_PRIMARY_DARK, bd=0, highlightthickness=0) 
             
             # The Canvas Card
-            card = tk.Canvas(wrapper, bg="white", highlightthickness=0, bd=0)
+            card = tk.Canvas(wrapper, bg=COLOR_PRIMARY_DARK, highlightthickness=0, bd=0)
             card.pack(fill="both", expand=True, padx=5, pady=2)
             
-            # Content Frame (White)
-            content = tk.Frame(card, bg="white")
+            # Content Frame
+            content = tk.Frame(card, bg=COLOR_SECONDARY_DARK)
             content_window = card.create_window(20, 20, window=content, anchor="nw")
 
             def _draw(e):
@@ -401,7 +414,7 @@ class ReportsView(ttk.Toplevel):
                 draw.rounded_rectangle((rect[0]-1, rect[1], rect[2]+1, rect[3]+2), radius=15, fill=(0,0,0,25))
                 
                 # Body
-                draw.rounded_rectangle(rect, radius=15, fill="white")
+                draw.rounded_rectangle(rect, radius=15, fill=COLOR_SECONDARY_DARK)
                 
                 bg = ImageTk.PhotoImage(img)
                 card._bg = bg
@@ -412,7 +425,7 @@ class ReportsView(ttk.Toplevel):
             
             # Title
             if title:
-                tk.Label(content, text=title, font=(FONT_FAMILY, 12, "bold"), bg="white", anchor="w", fg=COLOR_TEXT_DARK).pack(fill="x", pady=(0, 10))
+                tk.Label(content, text=title, font=(FONT_FAMILY, 12, "bold"), bg=COLOR_SECONDARY_DARK, anchor="w", fg=COLOR_TEXT_LIGHT).pack(fill="x", pady=(0, 10))
                 
             return wrapper, content
 
@@ -422,30 +435,33 @@ class ReportsView(ttk.Toplevel):
         left_paned_window.add(sales_wrapper, weight=1)
 
         # --- Totals Footer (Packed Before Tree to preserve bottom visibility) ---
-        self.totals_frame = tk.Frame(sales_content, bg="white") 
+        self.totals_frame = tk.Frame(sales_content, bg=COLOR_SECONDARY_DARK) 
         self.totals_frame.pack(side="bottom", fill="x", pady=2) 
         
-        inner_total_frame = tk.Frame(self.totals_frame, bg="white") 
+        inner_total_frame = tk.Frame(self.totals_frame, bg=COLOR_SECONDARY_DARK) 
         inner_total_frame.pack(side="right", padx=10)
         
         # Total (Base)
-        self.lbl_sum_total = tk.Label(inner_total_frame, text="Total: S/ 0.00", font=(FONT_FAMILY, 12, "bold"), bg="white", fg=COLOR_TEXT_DARK)
+        # Total (Base)
+        self.lbl_sum_total = tk.Label(inner_total_frame, text="Total: S/ 0.00", font=(FONT_FAMILY, 12, "bold"), bg=COLOR_SECONDARY_DARK, fg=COLOR_TEXT_LIGHT)
         self.lbl_sum_total.pack(side="left", padx=10)
         
         # Desc/Adic (Diff)
-        self.lbl_sum_diff = tk.Label(inner_total_frame, text="Desc/Adic: S/ 0.00", font=(FONT_FAMILY, 12, "bold"), bg="white", fg="#17a2b8")
+        self.lbl_sum_diff = tk.Label(inner_total_frame, text="Desc/Adic: S/ 0.00", font=(FONT_FAMILY, 12, "bold"), bg=COLOR_SECONDARY_DARK, fg="#17a2b8")
         self.lbl_sum_diff.pack(side="left", padx=10)
         
         # Total N. (Final)
-        self.lbl_sum_final = tk.Label(inner_total_frame, text="Total N.: S/ 0.00", font=(FONT_FAMILY, FONT_SIZE_LARGE, "bold"), bg="white", fg="#28a745")
+        self.lbl_sum_final = tk.Label(inner_total_frame, text="Total N.: S/ 0.00", font=(FONT_FAMILY, FONT_SIZE_LARGE, "bold"), bg=COLOR_SECONDARY_DARK, fg="#28a745")
         self.lbl_sum_final.pack(side="left", padx=10)
 
         # Treeview Container
-        st_frame = tk.Frame(sales_content, bg="white")
+        st_frame = tk.Frame(sales_content, bg=COLOR_SECONDARY_DARK)
         st_frame.pack(fill="both", expand=True)
         
         # Scrollbar needs to be defined first or packed side right
-        sales_scrollbar = ttk.Scrollbar(st_frame, orient=VERTICAL)
+        # Scrollbar needs to be defined first or packed side right
+        sb_style = "secondary-round" if "Dark" in config_manager.load_setting("system_theme", "Dark") else "default"
+        sales_scrollbar = ttk.Scrollbar(st_frame, orient=VERTICAL, bootstyle=sb_style)
         sales_scrollbar.pack(side="right", fill="y")
         
         self.sales_tree = ttk.Treeview(st_frame, columns=("ID", "Tipo", "Número", "Fecha", "Cliente", "TotalOriginal", "TotalFinal", "DescAdic"), show="tree headings", displaycolumns=("Tipo", "Número", "Fecha", "Cliente", "TotalOriginal", "TotalFinal", "DescAdic"), yscrollcommand=sales_scrollbar.set)
@@ -454,8 +470,8 @@ class ReportsView(ttk.Toplevel):
 
         self.sales_tree.heading("#0", text="Estado", anchor="center", command=lambda: self.treeview_sort_column(self.sales_tree, "#0", False))
         self.sales_tree.column("#0", width=60, anchor="center", stretch=False)
-        self.sales_tree.tag_configure('oddrow', background="#f2f2f2")
-        self.sales_tree.tag_configure('evenrow', background="white")
+        self.sales_tree.tag_configure('oddrow', background="#2a2e33")
+        self.sales_tree.tag_configure('evenrow', background=COLOR_SECONDARY_DARK)
 
         # Configurar encabezados con ordenamiento
         columns_data = [
@@ -486,18 +502,19 @@ class ReportsView(ttk.Toplevel):
         left_paned_window.add(details_wrapper, weight=1)
 
         # Tree Container
-        dt_frame = tk.Frame(details_content, bg="white")
+        dt_frame = tk.Frame(details_content, bg=COLOR_SECONDARY_DARK)
         dt_frame.pack(fill="both", expand=True)
 
-        details_scrollbar = ttk.Scrollbar(dt_frame, orient=VERTICAL)
+        sb_style = "secondary-round" if "Dark" in config_manager.load_setting("system_theme", "Dark") else "default"
+        details_scrollbar = ttk.Scrollbar(dt_frame, orient=VERTICAL, bootstyle=sb_style)
         details_scrollbar.pack(side="right", fill="y")
 
         self.details_tree = ttk.Treeview(dt_frame, columns=("Producto", "Cantidad", "U.Medida", "Precio", "Subtotal"), show="headings", yscrollcommand=details_scrollbar.set)
         self.details_tree.pack(side="left", fill="both", expand=True)
         details_scrollbar.config(command=self.details_tree.yview)
         
-        self.details_tree.tag_configure('oddrow', background="#f2f2f2")
-        self.details_tree.tag_configure('evenrow', background="white")
+        self.details_tree.tag_configure('oddrow', background="#2a2e33")
+        self.details_tree.tag_configure('evenrow', background=COLOR_SECONDARY_DARK)
 
         self.details_tree.heading("Producto", text="Producto")
         self.details_tree.heading("Cantidad", text="Cant.")
@@ -514,8 +531,8 @@ class ReportsView(ttk.Toplevel):
 
         # Helper for Ticket Card (80mm ~ 302px, Centered, Intense Homogeneous Shadow)
         def create_ticket_card_frame(parent_pane):
-            wrapper = tk.Frame(parent_pane, bg="white", bd=0, highlightthickness=0)
-            card = tk.Canvas(wrapper, bg="white", highlightthickness=0, bd=0)
+            wrapper = tk.Frame(parent_pane, bg=COLOR_PRIMARY_DARK, bd=0, highlightthickness=0)
+            card = tk.Canvas(wrapper, bg=COLOR_PRIMARY_DARK, highlightthickness=0, bd=0)
             card.pack(fill="both", expand=True, padx=0, pady=0)
             
             # 80mm ~ 302px. Increased to 340 for better fit of long lines

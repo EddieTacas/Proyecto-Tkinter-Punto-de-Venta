@@ -193,12 +193,27 @@ class InventoryView(ttk.Toplevel):
         self.state('zoomed')
         
         # Import Colors from HTML spec
+        is_dark = "Dark" in config_manager.load_setting("system_theme", "Dark")
+
+        # Import Colors from HTML spec (Dynamic)
         HTML_NAVY = '#0a2240'
-        HTML_BG = '#f0f2f5'
-        HTML_WHITE = '#ffffff'
-        HTML_BLUE = '#007bff'
-        HTML_RED = '#dc3545'
-        HTML_BORDER = '#999999' # Darker gray for visibility
+        
+        if is_dark:
+             HTML_BG = COLOR_PRIMARY_DARK # e.g. #181A1B
+             HTML_WHITE = COLOR_SECONDARY_DARK # e.g. #252A2E
+             HTML_BLUE = '#0d6efd' # Brighter blue for dark mode
+             HTML_RED = '#dc3545'
+             HTML_BORDER = '#444444' # Dark gray border
+             TEXT_ON_CARD = COLOR_TEXT_LIGHT
+             HEADER_FG = 'white'
+        else:
+             HTML_BG = '#f0f2f5'
+             HTML_WHITE = '#ffffff'
+             HTML_BLUE = '#007bff'
+             HTML_RED = '#dc3545'
+             HTML_BORDER = '#999999'
+             TEXT_ON_CARD = '#333333'
+             HEADER_FG = 'white'
         
         self.configure(background=HTML_BG)
         
@@ -217,7 +232,7 @@ class InventoryView(ttk.Toplevel):
 
         # Main Card
         style.configure('HtmlCard.TFrame', background=HTML_WHITE)
-        style.configure('HtmlCard.TLabel', background=HTML_WHITE, foreground='#333333', font=(FONT_FAMILY, 10, 'bold'))
+        style.configure('HtmlCard.TLabel', background=HTML_WHITE, foreground=TEXT_ON_CARD, font=(FONT_FAMILY, 10, 'bold'))
         
         # Inputs (Rounded Clean Look)
         # Helper to create rounded border images
@@ -242,8 +257,11 @@ class InventoryView(ttk.Toplevel):
                  return ImageTk.PhotoImage(img, name=image_name)
             return ImageTk.PhotoImage(img)
 
-        self.img_rounded_field = create_rounded_element("field", HTML_WHITE, HTML_BORDER, image_name="img_rounded_field_common")
-        self.img_rounded_focus = create_rounded_element("focus", HTML_WHITE, HTML_BLUE, image_name="img_rounded_focus_common") # Focus state
+        bg_input = "#2c3e50" if is_dark else HTML_WHITE # Dark input background if dark mode
+        fg_input = "white" if is_dark else "black"
+
+        self.img_rounded_field = create_rounded_element("field", bg_input, HTML_BORDER, image_name="img_rounded_field_common")
+        self.img_rounded_focus = create_rounded_element("focus", bg_input, HTML_BLUE, image_name="img_rounded_focus_common") # Focus state
         
         # Register Elements
         try:
@@ -261,7 +279,7 @@ class InventoryView(ttk.Toplevel):
                 ]})
             ]})
         ])
-        style.configure('HtmlEntry.TEntry', padding=5) # Padding inside the border
+        style.configure('HtmlEntry.TEntry', padding=5, foreground=fg_input) # Padding inside the border
         
         # Configure Combobox Style
         # Combobox needs the arrow. We can reuse Rounded.field as the background.
@@ -276,10 +294,10 @@ class InventoryView(ttk.Toplevel):
         ])
         style.configure('HtmlEntry.TCombobox', padding=5)
         style.map('HtmlEntry.TCombobox', 
-                  fieldbackground=[('readonly', HTML_WHITE)],
+                  fieldbackground=[('readonly', bg_input)],
                   selectbackground=[('readonly', '#007bff')],
                   selectforeground=[('readonly', 'white')],
-                  foreground=[('readonly', 'black')]) # Ensure text is visible
+                  foreground=[('readonly', fg_input)]) # Ensure text is visible
 
         # Buttons (Modern Rounded - utilizing bootstyle primary/danger)
         # We will use 'primary' (Blue) and 'danger' (Red) directly in widget creation for rounded look.
@@ -296,8 +314,8 @@ class InventoryView(ttk.Toplevel):
 
         # Footer
         style.configure('HtmlFooter.TFrame', background=HTML_WHITE)
-        style.configure('HtmlStat.TLabel', background=HTML_WHITE, foreground='#555555', font=(FONT_FAMILY, 9))       # Label (Normal)
-        style.configure('HtmlStatBold.TLabel', background=HTML_WHITE, foreground='#333333', font=(FONT_FAMILY, 10, 'bold')) # Value (Bold)
+        style.configure('HtmlStat.TLabel', background=HTML_WHITE, foreground='#aaaaaa' if is_dark else '#555555', font=(FONT_FAMILY, 9))       # Label (Normal)
+        style.configure('HtmlStatBold.TLabel', background=HTML_WHITE, foreground=TEXT_ON_CARD, font=(FONT_FAMILY, 10, 'bold')) # Value (Bold)
 
         # --- LAYOUT ---
         
@@ -614,6 +632,15 @@ class InventoryView(ttk.Toplevel):
         style.configure("Html.Treeview.Heading", image=self.img_header_center, background=HTML_NAVY, foreground="white", font=(FONT_FAMILY, 9, "bold"), borderwidth=0)
         style.map("Html.Treeview.Heading", background=[('active', HTML_NAVY)], relief=[('pressed', 'flat'), ('active', 'flat')])
         
+        style.configure("Html.Treeview", 
+                        background=HTML_WHITE, 
+                        fieldbackground=HTML_WHITE, 
+                        foreground=TEXT_ON_CARD, 
+                        font=(FONT_FAMILY, 9), 
+                        rowheight=28, 
+                        borderwidth=0, 
+                        relief="flat")
+        
         self.tree = ttk.Treeview(tree_container, columns=("ID", "Código", "Categoría", "Nombre", "Precio", "Stock", "Valorizado", "U. Medida", "Tipo Op.", "Emisor", "Dirección"), show="headings", style="Html.Treeview")
         
         # Columns
@@ -634,7 +661,8 @@ class InventoryView(ttk.Toplevel):
         
         self.tree["displaycolumns"] = ("Código", "Categoría", "Nombre", "Precio", "Stock", "Valorizado", "U. Medida", "Tipo Op.", "Emisor", "Dirección")
         
-        scrollbar = ttk.Scrollbar(tree_container, orient='vertical', command=self.tree.yview)
+        sb_style = "secondary-round" if is_dark else "default"
+        scrollbar = ttk.Scrollbar(tree_container, orient='vertical', command=self.tree.yview, bootstyle=sb_style)
         self.tree.configure(yscrollcommand=scrollbar.set)
         
         self.tree.pack(side='left', fill='both', expand=True)
@@ -649,8 +677,13 @@ class InventoryView(ttk.Toplevel):
         # Tags
         self.tree.tag_configure('stock_negative', foreground='#dc3545') 
         self.tree.tag_configure('stock_zero', foreground='#ffc107')
-        self.tree.tag_configure('evenrow', background='#f8f9fa')
-        self.tree.tag_configure('oddrow', background='#ffffff')
+        
+        if is_dark:
+             self.tree.tag_configure('evenrow', background='#2a2e33') # Dark Alternate
+             self.tree.tag_configure('oddrow', background=HTML_WHITE) # Dark Base
+        else:
+             self.tree.tag_configure('evenrow', background='#f8f9fa')
+             self.tree.tag_configure('oddrow', background='#ffffff')
         
 
 
@@ -952,23 +985,32 @@ class InventoryView(ttk.Toplevel):
             messagebox.showerror("Sin Selección", "Por favor, seleccione un producto para eliminar.", parent=self)
             return
 
-        product_id = self.tree.item(selected_item)["values"][0]
-        product_name = self.tree.item(selected_item)["values"][3] # Name is at index 3 now
-        stock = float(self.tree.item(selected_item)["values"][5]) # Stock is at index 5
+        values = self.tree.item(selected_item)["values"]
+        
+        product_id = values[0]
+        product_name = values[3] 
+        # Clean stock string
+        stock_str = str(values[5]).replace(",", "")
+        try:
+            stock = float(stock_str)
+        except ValueError:
+            stock = 0.0
 
         # Use epsilon for float comparison
         if abs(stock) > 0.001:
             messagebox.showwarning("Acción Denegada", f"Solo se pueden eliminar productos con stock 0. El producto '{product_name}' tiene stock ({stock}).", parent=self)
             return
         
-        if messagebox.askyesno("Confirmar Eliminación", f"¿Está seguro de que desea eliminar el producto '{product_name}'?", parent=self):
+        # Usar messagebox nativo de tkinter para evitar problemas con ttkbootstrap
+        import tkinter.messagebox as tk_messagebox
+        
+        if tk_messagebox.askyesno("Confirmar Eliminación", f"¿Está seguro de que desea eliminar el producto '{product_name}'?", parent=self):
             try:
-                # Ensure ID is treated as correct type (int usually)
+                # Ensure ID is treated as correct type
                 try: product_id_int = int(product_id)
                 except: product_id_int = product_id
                 
                 if database.delete_product(product_id_int):
-                    # Update UI immediately to give feedback
                     self.tree.delete(selected_item)
                     messagebox.showinfo("Éxito", "Producto eliminado correctamente.", parent=self)
                     self.populate_products_list()
@@ -1503,8 +1545,23 @@ class InventoryView(ttk.Toplevel):
             return
 
         import os
-        desktop_path = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
-        file_path = os.path.join(desktop_path, "plantilla excel.xlsx")
+        import winreg
+        
+        # Obtener ruta del escritorio desde el registro de Windows (funciona en cualquier idioma/usuario)
+        try:
+            key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
+            desktop_path = winreg.QueryValueEx(key, "Desktop")[0]
+            winreg.CloseKey(key)
+        except Exception:
+            # Fallback: usar USERPROFILE/Desktop
+            desktop_path = os.path.join(os.environ.get('USERPROFILE', ''), 'Desktop')
+        
+        # Verificar que el directorio exista
+        if not os.path.exists(desktop_path):
+            messagebox.showerror("Error", f"No se encontró el escritorio: {desktop_path}", parent=self)
+            return
+            
+        file_path = os.path.join(desktop_path, "PLANTILLA EXCEL.xlsx")
 
         # Columns
         columns = ["NOMBRE", "CODIGO", "PRECIO", "STOCK", "UNIDAD_MEDIDA", "CATEGORIA", "TIPO_OPERACION"]

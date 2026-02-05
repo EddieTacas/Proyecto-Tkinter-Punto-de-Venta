@@ -17,12 +17,13 @@ except ImportError:
 # --- Constantes de Estilo (Theme Manager) ---
 from theme_manager import COLOR_PRIMARY, COLOR_SECONDARY, COLOR_ACCENT, COLOR_TEXT, FONT_FAMILY, FONT_SIZE_NORMAL, FONT_SIZE_LARGE
 
+# Local Aliases for consistency
+COLOR_PRIMARY_DARK = COLOR_PRIMARY
+COLOR_SECONDARY_DARK = COLOR_SECONDARY
+COLOR_TEXT_LIGHT = COLOR_TEXT
+
 # Constants for "Ventas" Style matching
-COLOR_PRIMARY_DARK = COLOR_PRIMARY # Used for main background in some views, but here we want white/gray look of Reports
-HTML_NAVY = '#0a2240'
-HTML_WHITE = '#ffffff'
-HTML_BG = '#f0f2f5' # Gray background for floating cards context
-GRAY_STRIPE = '#f2f2f2'
+# These will be set dynamically in __init__ or used as defaults here if needed outside class (unlikely)
 
 # --- HELPER CLASSES ---
 
@@ -162,6 +163,35 @@ class MovementsView(ttk.Toplevel):
         super().__init__(master)
         self.title("Ingresos y Salidas de Mercadería")
 
+        # --- Base Theme Logic ---
+        is_dark = "Dark" in config_manager.load_setting("system_theme", "Dark")
+        
+        # Import Colors from HTML spec (Dynamic)
+        HTML_NAVY = '#0a2240'
+        
+        if is_dark:
+             HTML_BG = COLOR_PRIMARY_DARK
+             HTML_WHITE = COLOR_SECONDARY_DARK
+             HTML_WHITE_INPUT = "#2c3e50"
+             HTML_WHITE_TEXT = COLOR_TEXT_LIGHT
+             HTML_BORDER = '#444444'
+             GRAY_STRIPE = '#2a2e33' # Dark Alternate
+             TEXT_HEADER_FG = 'white'
+             TICKET_BG = "#2c2c2c"
+             TICKET_FG = "#e0e0e0"
+             SHADOW_COLOR = "#1a1a1a"
+        else:
+             HTML_BG = '#f0f2f5'
+             HTML_WHITE = '#ffffff'
+             HTML_WHITE_INPUT = '#ffffff'
+             HTML_WHITE_TEXT = '#333333'
+             HTML_BORDER = '#dddddd'
+             GRAY_STRIPE = '#f2f2f2'
+             TEXT_HEADER_FG = 'black'
+             TICKET_BG = "#ffffff"
+             TICKET_FG = "#333333"
+             SHADOW_COLOR = "#e0e0e0"
+
         # Estilos (Copied from ReportsView for consistency)
         style = ttk.Style.get_instance()
         style.configure('Treeview', background="white", fieldbackground="white", foreground="black", bordercolor="#dddddd")
@@ -187,9 +217,12 @@ class MovementsView(ttk.Toplevel):
         
         # Styles
         style = ttk.Style.get_instance()
-        style.configure('TLabel', background=HTML_WHITE, foreground='#333333', font=(FONT_FAMILY, 10))
+        style.configure('TLabel', background=HTML_WHITE, foreground=HTML_WHITE_TEXT, font=(FONT_FAMILY, 10))
         # Remove bootstyle artifacts for trees
         style.configure('Treeview', background="white", fieldbackground="white", foreground="black", bordercolor="#dddddd", rowheight=28)
+        if is_dark:
+            style.configure('Treeview', background=HTML_WHITE, fieldbackground=HTML_WHITE, foreground=HTML_WHITE_TEXT, bordercolor="#444444")
+            
         style.map('Treeview', background=[('selected', '#007bff')], foreground=[('selected', 'white')])
         style.configure('Treeview.Heading', font=(FONT_FAMILY, 10, 'bold'), background=HTML_NAVY, foreground='white')
         style.map('Treeview.Heading', background=[('active', HTML_NAVY)])
@@ -198,24 +231,25 @@ class MovementsView(ttk.Toplevel):
         # Combobox
         style.configure('Borderless.TCombobox', borderwidth=0, relief='flat', arrowsize=15)
         style.map('Borderless.TCombobox', 
-                  fieldbackground=[('readonly','white'), ('active', 'white'), ('focus', 'white')], 
-                  background=[('readonly','white')], 
-                  bordercolor=[('focus', 'white'), ('!disabled', 'white')],
-                  lightcolor=[('focus', 'white'), ('!disabled', 'white')],
-                  darkcolor=[('focus', 'white'), ('!disabled', 'white')])
+                  fieldbackground=[('readonly', HTML_WHITE_INPUT), ('active', HTML_WHITE_INPUT), ('focus', HTML_WHITE_INPUT)], 
+                  background=[('readonly', HTML_WHITE_INPUT)], 
+                  bordercolor=[('focus', HTML_WHITE_INPUT), ('!disabled', HTML_WHITE_INPUT)],
+                  lightcolor=[('focus', HTML_WHITE_INPUT), ('!disabled', HTML_WHITE_INPUT)],
+                  darkcolor=[('focus', HTML_WHITE_INPUT), ('!disabled', HTML_WHITE_INPUT)],
+                  foreground=[('readonly', 'white' if is_dark else 'black')])
         
         # Entry
-        style.configure('Borderless.TEntry', fieldbackground='white', borderwidth=0, relief='flat', highlightthickness=0)
+        style.configure('Borderless.TEntry', fieldbackground=HTML_WHITE_INPUT, borderwidth=0, relief='flat', highlightthickness=0, foreground='white' if is_dark else 'black')
         style.map('Borderless.TEntry', 
-                  fieldbackground=[('focus','white'), ('!disabled', 'white')],
-                  bordercolor=[('focus', 'white'), ('!disabled', 'white')],
-                  lightcolor=[('focus', 'white'), ('!disabled', 'white')],
-                  darkcolor=[('focus', 'white'), ('!disabled', 'white')])
+                  fieldbackground=[('focus', HTML_WHITE_INPUT), ('!disabled', HTML_WHITE_INPUT)],
+                  bordercolor=[('focus', HTML_WHITE_INPUT), ('!disabled', HTML_WHITE_INPUT)],
+                  lightcolor=[('focus', HTML_WHITE_INPUT), ('!disabled', HTML_WHITE_INPUT)],
+                  darkcolor=[('focus', HTML_WHITE_INPUT), ('!disabled', HTML_WHITE_INPUT)])
         
         # Helper to create floating cards
         def create_floating_card_frame(parent_pane, title=None, dynamic_height=False):
-            wrapper = tk.Frame(parent_pane, bg="#f0f2f5", bd=0, highlightthickness=0)
-            card = tk.Canvas(wrapper, bg="#f0f2f5", highlightthickness=0, bd=0)
+            wrapper = tk.Frame(parent_pane, bg=HTML_BG, bd=0, highlightthickness=0)
+            card = tk.Canvas(wrapper, bg=HTML_BG, highlightthickness=0, bd=0)
             card.pack(fill="both", expand=True) 
             
             content = tk.Frame(card, bg=HTML_WHITE)
@@ -248,9 +282,10 @@ class MovementsView(ttk.Toplevel):
                 img = Image.new("RGBA", (w, h), (0,0,0,0))
                 draw = ImageDraw.Draw(img)
                 rec = (MARGIN, MARGIN, w-MARGIN, h-MARGIN)
+                rec = (MARGIN, MARGIN, w-MARGIN, h-MARGIN)
                 # Shadow
-                draw.rounded_rectangle((rec[0]-2, rec[1]-2, rec[2]+4, rec[3]+4), radius=12, fill="#e0e0e0")
-                draw.rounded_rectangle(rec, radius=12, fill="white")
+                draw.rounded_rectangle((rec[0]-2, rec[1]-2, rec[2]+4, rec[3]+4), radius=12, fill=SHADOW_COLOR)
+                draw.rounded_rectangle(rec, radius=12, fill=HTML_WHITE)
                 bg = ImageTk.PhotoImage(img)
                 card._bg = bg
                 card.create_image(0,0, image=bg, anchor="nw", tags="bg")
@@ -260,7 +295,7 @@ class MovementsView(ttk.Toplevel):
             card.bind("<Configure>", _draw)
             
             if title:
-                tk.Label(content, text=title, font=(FONT_FAMILY, 11, "bold"), bg=HTML_WHITE, fg="#555").pack(fill="x", pady=(10, 5), padx=10)
+                tk.Label(content, text=title, font=(FONT_FAMILY, 11, "bold"), bg=HTML_WHITE, fg=HTML_WHITE_TEXT).pack(fill="x", pady=(10, 5), padx=10)
             return wrapper, content
 
         def create_rounded_widget(parent, widget_class, variable=None, width=150, **kwargs):
@@ -275,10 +310,10 @@ class MovementsView(ttk.Toplevel):
                  widget = widget_class(container, bootstyle="default", width=10, dateformat="%d/%m/%Y", **kwargs)
                  try: widget.entry.configure(style=style_name)
                  except: pass
-            elif widget_class == ttk.Entry:
+            if widget_class == ttk.Entry:
                  widget = widget_class(container, textvariable=variable, width=20, style=style_name, **kwargs)
             
-            bg_fill = "white"
+            bg_fill = HTML_WHITE_INPUT
             
             def _draw_bg(e=None):
                 w = container.winfo_width()
@@ -326,7 +361,7 @@ class MovementsView(ttk.Toplevel):
         
         def add_filter(lbl, widget_cls, var=None, width=150, is_date=False):
             f = tk.Frame(f_container, bg=HTML_WHITE, bd=0, highlightthickness=0, relief="flat")
-            tk.Label(f, text=lbl, bg=HTML_WHITE, font=(FONT_FAMILY, 9, "bold")).pack(side="left", padx=(0,5))
+            tk.Label(f, text=lbl, bg=HTML_WHITE, fg=HTML_WHITE_TEXT, font=(FONT_FAMILY, 9, "bold")).pack(side="left", padx=(0,5))
             if is_date:
                 wid, con = create_rounded_widget(f, widget_cls, width=width)
             else:
@@ -431,8 +466,8 @@ class MovementsView(ttk.Toplevel):
         self.hist_tree.column("Motivo", width=150)
         self.hist_tree.pack(fill="both", expand=True, padx=10, pady=5)
         self.hist_tree.bind("<<TreeviewSelect>>", self.on_movement_select)
-        self.hist_tree.tag_configure('oddrow', background='#f2f2f2')
-        self.hist_tree.tag_configure('evenrow', background="white")
+        self.hist_tree.tag_configure('oddrow', background=GRAY_STRIPE)
+        self.hist_tree.tag_configure('evenrow', background=HTML_WHITE)
         
         # Footer Row for Total
 
@@ -441,7 +476,7 @@ class MovementsView(ttk.Toplevel):
         det_wrapper, det_content = create_floating_card_frame(left_frame, None, dynamic_height=False)
         det_wrapper.pack(fill="both", expand=True, pady=1) 
         
-        tk.Label(det_content, text="Detalles del Ingreso o Salida o Anulado", font=(FONT_FAMILY, 10, "bold"), bg=HTML_WHITE, fg="#555").pack(anchor="w", padx=10, pady=(5, 5))
+        tk.Label(det_content, text="Detalles del Ingreso o Salida o Anulado", font=(FONT_FAMILY, 10, "bold"), bg=HTML_WHITE, fg=HTML_WHITE_TEXT).pack(anchor="w", padx=10, pady=(5, 5))
         
         d_cols = ("Producto", "Cantidad", "UM", "P.Unit", "Subtotal")
         self.det_tree = ttk.Treeview(det_content, columns=d_cols, show="tree headings") 
@@ -452,8 +487,8 @@ class MovementsView(ttk.Toplevel):
         self.det_tree.pack(fill="both", expand=True, padx=10, pady=5)
 
         self.det_tree.pack(fill="both", expand=True, padx=10, pady=5)
-        self.det_tree.tag_configure('oddrow', background='#f2f2f2')
-        self.det_tree.tag_configure('evenrow', background="white")
+        self.det_tree.tag_configure('oddrow', background=GRAY_STRIPE)
+        self.det_tree.tag_configure('evenrow', background=HTML_WHITE)
 
         # --- RIGHT PANE: TICKET PREVIEW (Expand/Fill) ---
         # No title for the card itself, but maybe a label inside
@@ -465,7 +500,8 @@ class MovementsView(ttk.Toplevel):
         ticket_center.pack(expand=True, fill="both", pady=20) # Fill both!
         
         # Ticket Text Widget
-        self.ticket_preview = tk.Text(ticket_center, wrap="none", font=("Consolas", 9), width=42, relief="flat", bg="#fff", fg="#333", padx=10, pady=10)
+        # Ticket Text Widget
+        self.ticket_preview = tk.Text(ticket_center, wrap="none", font=("Consolas", 9), width=42, relief="flat", bg=TICKET_BG, fg=TICKET_FG, padx=10, pady=10)
         self.ticket_preview.pack(fill="y", expand=True) # Expand Y
         self.ticket_preview.config(highlightbackground="#ddd", highlightthickness=1)
         self.ticket_preview.config(state="disabled")

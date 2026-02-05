@@ -4,7 +4,9 @@
         "total": 0,
         "doc_type": "BOLETA DE VENTA ELECTR\u00d3NICA",
         "payment_method": "EFECTIVO",
-        "amount_paid": "0.0",
+        "amount_paid": 0.0,
+        "payment_method2": "NINGUNO",
+        "amount_paid2": 0.0,
         "customer": {
             "doc": "",
             "name": "",
@@ -19,7 +21,9 @@
         "total": 0,
         "doc_type": "BOLETA DE VENTA ELECTR\u00d3NICA",
         "payment_method": "EFECTIVO",
-        "amount_paid": "0.0",
+        "amount_paid": 0.0,
+        "payment_method2": "NINGUNO",
+        "amount_paid2": 0.0,
         "customer": {
             "doc": "",
             "name": "",
@@ -34,7 +38,9 @@
         "total": 0,
         "doc_type": "BOLETA DE VENTA ELECTR\u00d3NICA",
         "payment_method": "EFECTIVO",
-        "amount_paid": "0.0",
+        "amount_paid": 0.0,
+        "payment_method2": "NINGUNO",
+        "amount_paid2": 0.0,
         "customer": {
             "doc": "",
             "name": "",
@@ -49,7 +55,9 @@
         "total": 0,
         "doc_type": "BOLETA DE VENTA ELECTR\u00d3NICA",
         "payment_method": "EFECTIVO",
-        "amount_paid": "0.0",
+        "amount_paid": 0.0,
+        "payment_method2": "NINGUNO",
+        "amount_paid2": 0.0,
         "customer": {
             "doc": "",
             "name": "",
@@ -64,14 +72,16 @@
         "total": 0,
         "doc_type": "NOTA DE VENTA",
         "payment_method": "EFECTIVO",
-        "amount_paid": "0.0",
+        "amount_paid": 0.0,
+        "payment_method2": "NINGUNO",
+        "amount_paid2": 0.0,
         "customer": {
             "doc": "",
             "name": "",
             "address": "",
             "phone": ""
         },
-        "issuer": "QUINCHO PAUCAR ALBINA",
-        "address": "JR. HIPOLITO UNANUE NRO. 1350 URB. EL PORVENIR"
+        "issuer": "TACAS QUINCHO EDDIE JHERSSON",
+        "address": "JR. AMERICA NRO. 489 URB. EL PORVENIR"
     }
 }

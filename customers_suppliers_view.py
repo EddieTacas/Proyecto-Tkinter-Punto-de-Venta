@@ -9,7 +9,13 @@ from PIL import Image, ImageTk, ImageDraw # Added for custom styles
 import tkinter as tk
 
 # --- Constantes de Estilo (Theme Manager) ---
-from theme_manager import FONT_FAMILY, FONT_SIZE_NORMAL, FONT_SIZE_LARGE, FONT_SIZE_HEADER
+from theme_manager import FONT_FAMILY, FONT_SIZE_NORMAL, FONT_SIZE_LARGE, FONT_SIZE_HEADER, COLOR_PRIMARY, COLOR_SECONDARY, COLOR_TEXT
+import config_manager
+
+# Define Aliases to match other views or just usage
+COLOR_PRIMARY_DARK = COLOR_PRIMARY
+COLOR_SECONDARY_DARK = COLOR_SECONDARY
+COLOR_TEXT_LIGHT = COLOR_TEXT
 
 class GradientButton(tk.Canvas):
     def __init__(self, master, text, icon, color1, color2, command, text_color="white", height=40, font_args=None, **kwargs):
@@ -140,12 +146,25 @@ class CustomersSuppliersView(ttk.Toplevel):
         self.state('zoomed')
         
         # Import Colors from HTML spec
+        is_dark = "Dark" in config_manager.load_setting("system_theme", "Dark")
+
+        # Import Colors from HTML spec (Dynamic)
         HTML_NAVY = '#0a2240'
-        HTML_BG = '#f0f2f5'
-        HTML_WHITE = '#ffffff'
-        HTML_BLUE = '#007bff'
-        HTML_RED = '#dc3545'
-        HTML_BORDER = '#999999' # Dark gray
+        
+        if is_dark:
+             HTML_BG = COLOR_PRIMARY_DARK # e.g. #181A1B
+             HTML_WHITE = COLOR_SECONDARY_DARK # e.g. #252A2E
+             HTML_BLUE = '#0d6efd'
+             HTML_RED = '#dc3545'
+             HTML_BORDER = '#444444' 
+             TEXT_ON_CARD = COLOR_TEXT_LIGHT
+        else:
+             HTML_BG = '#f0f2f5'
+             HTML_WHITE = '#ffffff'
+             HTML_BLUE = '#007bff'
+             HTML_RED = '#dc3545'
+             HTML_BORDER = '#999999'
+             TEXT_ON_CARD = '#333333'
         
         self.configure(background=HTML_BG)
         
@@ -154,7 +173,7 @@ class CustomersSuppliersView(ttk.Toplevel):
         # --- HTML-Like Styles ---
         # Header styles not needed for GradientFrame but keeping for labels if any
         style.configure('HtmlCard.TFrame', background=HTML_WHITE)
-        style.configure('HtmlCard.TLabel', background=HTML_WHITE, foreground='#333333', font=(FONT_FAMILY, 10, 'bold'))
+        style.configure('HtmlCard.TLabel', background=HTML_WHITE, foreground=TEXT_ON_CARD, font=(FONT_FAMILY, 10, 'bold'))
         
         # Helper for rounded borders
         def create_rounded_element(name, color, border_color, width=150, height=30, radius=10, image_name=None):
@@ -167,8 +186,11 @@ class CustomersSuppliersView(ttk.Toplevel):
                  return ImageTk.PhotoImage(img, name=image_name)
             return ImageTk.PhotoImage(img)
 
-        self.img_rounded_field = create_rounded_element("field", HTML_WHITE, HTML_BORDER, image_name="img_rounded_field_common")
-        self.img_rounded_focus = create_rounded_element("focus", HTML_WHITE, HTML_BLUE, image_name="img_rounded_focus_common")
+        bg_input = "#2c3e50" if is_dark else HTML_WHITE # Dark input background if dark mode
+        fg_input = "white" if is_dark else "black"
+
+        self.img_rounded_field = create_rounded_element("field", bg_input, HTML_BORDER, image_name="img_rounded_field_common")
+        self.img_rounded_focus = create_rounded_element("focus", bg_input, HTML_BLUE, image_name="img_rounded_focus_common")
         
         try:
              style.element_create("Rounded.field", "image", self.img_rounded_field,
@@ -185,7 +207,7 @@ class CustomersSuppliersView(ttk.Toplevel):
                 ]})
             ]})
         ])
-        style.configure('HtmlEntry.TEntry', padding=5)
+        style.configure('HtmlEntry.TEntry', padding=5, foreground=fg_input)
         
         # Configure Combobox Style
         style.layout('HtmlEntry.TCombobox', [
@@ -198,15 +220,15 @@ class CustomersSuppliersView(ttk.Toplevel):
         ])
         style.configure('HtmlEntry.TCombobox', padding=5)
         style.map('HtmlEntry.TCombobox', 
-                  fieldbackground=[('readonly', HTML_WHITE)],
+                  fieldbackground=[('readonly', bg_input)],
                   selectbackground=[('readonly', '#007bff')],
                   selectforeground=[('readonly', 'white')],
-                  foreground=[('readonly', 'black')])
+                  foreground=[('readonly', fg_input)])
 
         # Table (Borderless)
         style.configure("Html.Treeview.Heading", background=HTML_NAVY, foreground="white", font=(FONT_FAMILY, 9, "bold"))
         style.map("Html.Treeview.Heading", background=[('active', HTML_NAVY)])
-        style.configure("Html.Treeview", font=(FONT_FAMILY, 9), rowheight=28, borderwidth=0, relief="flat")
+        style.configure("Html.Treeview", background=HTML_WHITE, fieldbackground=HTML_WHITE, foreground=TEXT_ON_CARD, font=(FONT_FAMILY, 9), rowheight=28, borderwidth=0, relief="flat")
         style.layout("Html.Treeview", [('Html.Treeview.treearea', {'sticky': 'nswe'})])
 
         # --- LAYOUT ---
@@ -387,14 +409,19 @@ class CustomersSuppliersView(ttk.Toplevel):
             else: img = self.img_header_center
             self.tree.heading(col, text=col, image=img)
 
-        scrollbar = ttk.Scrollbar(tree_container, orient='vertical', command=self.tree.yview)
+        sb_style = "secondary-round" if is_dark else "default"
+        scrollbar = ttk.Scrollbar(tree_container, orient='vertical', command=self.tree.yview, bootstyle=sb_style)
         self.tree.configure(yscrollcommand=scrollbar.set)
         
         self.tree.pack(side='left', fill='both', expand=True)
         scrollbar.pack(side='right', fill='y')
         
-        self.tree.tag_configure('evenrow', background='#f8f9fa')
-        self.tree.tag_configure('oddrow', background='#ffffff')
+        if is_dark:
+             self.tree.tag_configure('evenrow', background='#2a2e33')
+             self.tree.tag_configure('oddrow', background=HTML_WHITE)
+        else:
+             self.tree.tag_configure('evenrow', background='#f8f9fa')
+             self.tree.tag_configure('oddrow', background='#ffffff')
         
         self.tree.bind("<<TreeviewSelect>>", self.load_selected_party)
         

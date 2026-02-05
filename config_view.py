@@ -80,15 +80,39 @@ class ConfigView(ttk.Toplevel):
         super().__init__(master)
         self.title("Configuración del Sistema")
         self.state('zoomed')
-        # Estilos personalizados eliminados para usar el tema global
-        # style = ttk.Style.get_instance()
-        # ... (removed overrides to respect Light/Dark theme)
+        self.state('zoomed')
         
-        # Force Label background to white to avoid gray boxes on white forms
+        # --- Base Theme Logic ---
+        is_dark = "Dark" in config_manager.load_setting("system_theme", "Dark")
+        
+        if is_dark:
+             self.BG_COLOR = COLOR_PRIMARY_DARK
+             self.BG_SOL_COLOR = COLOR_SECONDARY_DARK # Lighter container
+             self.FG_COLOR = "white"
+             self.INPUT_BG = "#2c3e50"
+             self.INPUT_FG = "white"
+             self.BORDER_COLOR = "#444444"
+             self.SB_STYLE = "secondary-round"
+        else:
+             self.BG_COLOR = "white"
+             self.BG_SOL_COLOR = "white"
+             self.FG_COLOR = "black"
+             self.INPUT_BG = "white"
+             self.INPUT_FG = "black"
+             self.BORDER_COLOR = "#dddddd"
+             self.SB_STYLE = "default"
+             
+        self.configure(background=self.BG_COLOR)
+
+        # Force Label background to match theme
         style = ttk.Style.get_instance()
-        style.configure('TLabel', background='white')
-        style.configure('TLabelframe', background='white')
-        style.configure('TLabelframe.Label', background='white')
+        style.configure('TLabel', background=self.BG_SOL_COLOR, foreground=self.FG_COLOR)
+        style.configure('TLabelframe', background=self.BG_SOL_COLOR, foreground=self.FG_COLOR, bordercolor=self.BORDER_COLOR)
+        style.configure('TLabelframe.Label', background=self.BG_SOL_COLOR, foreground=self.FG_COLOR)
+        style.configure('TFrame', background=self.BG_SOL_COLOR)
+        # Tab background (Notebook) - often needs Primary/Dark
+        style.configure('TNotebook', background=self.BG_COLOR)
+        style.configure('TNotebook.Tab', background=self.BG_COLOR)
 
         # --- Header ---
         # Usar GradientFrame para el encabezado
@@ -186,7 +210,12 @@ class ConfigView(ttk.Toplevel):
         # Estimate width if not provided (approx char width * 8px + padding)
         w = (width * 8 + 20) if width else 200
         
-        container = tk.Canvas(parent, bg="white", height=h, width=w, highlightthickness=0)
+        w = (width * 8 + 20) if width else 200
+        
+        # Inherit BG from parent or use default
+        parent_bg = self.BG_SOL_COLOR
+        
+        container = tk.Canvas(parent, bg=parent_bg, height=h, width=w, highlightthickness=0)
         
         # Style names
         style_entry = 'Borderless.TEntry'
@@ -197,19 +226,21 @@ class ConfigView(ttk.Toplevel):
         style = ttk.Style.get_instance()
         
         # Aggressively hide inner borders
-        style.configure('Borderless.TEntry', fieldbackground='white', borderwidth=0, relief='flat', highlightthickness=0)
+        # Aggressively hide inner borders
+        style.configure('Borderless.TEntry', fieldbackground=self.INPUT_BG, foreground=self.INPUT_FG, borderwidth=0, relief='flat', highlightthickness=0)
         style.map('Borderless.TEntry', 
-                  fieldbackground=[('focus','white'), ('!disabled', 'white')],
-                  bordercolor=[('focus', 'white'), ('!disabled', 'white')],
-                  lightcolor=[('focus', 'white'), ('!disabled', 'white')],
-                  darkcolor=[('focus', 'white'), ('!disabled', 'white')])
+                  fieldbackground=[('focus',self.INPUT_BG), ('!disabled', self.INPUT_BG)],
+                  bordercolor=[('focus', self.INPUT_BG), ('!disabled', self.INPUT_BG)],
+                  lightcolor=[('focus', self.INPUT_BG), ('!disabled', self.INPUT_BG)],
+                  darkcolor=[('focus', self.INPUT_BG), ('!disabled', self.INPUT_BG)])
 
         style.configure('Borderless.TCombobox', borderwidth=0, relief='flat', arrowsize=15)
         style.map('Borderless.TCombobox', 
-                  fieldbackground=[('readonly','white'), ('active', 'white')],
-                  bordercolor=[('focus', 'white'), ('!disabled', 'white')],
-                  lightcolor=[('focus', 'white'), ('!disabled', 'white')],
-                  darkcolor=[('focus', 'white'), ('!disabled', 'white')])
+                  fieldbackground=[('readonly', self.INPUT_BG), ('active', self.INPUT_BG)],
+                  bordercolor=[('focus', self.INPUT_BG), ('!disabled', self.INPUT_BG)],
+                  lightcolor=[('focus', self.INPUT_BG), ('!disabled', self.INPUT_BG)],
+                  darkcolor=[('focus', self.INPUT_BG), ('!disabled', self.INPUT_BG)],
+                  foreground=[('readonly', self.INPUT_FG)])
 
         # Mutable state
         container.border_color = "#cccccc" # User wants "contorno externo gris" back
@@ -224,7 +255,7 @@ class ConfigView(ttk.Toplevel):
              widget = widget_class(container, textvariable=variable, width=width, style=style_entry, **kwargs)
         
         # Draw Background
-        bg_fill = "white"
+        bg_fill = self.INPUT_BG
         
         def _draw_bg(e=None):
             cw = container.winfo_width()
@@ -269,8 +300,8 @@ class ConfigView(ttk.Toplevel):
         parent_tab.rowconfigure(0, weight=1)
 
         # --- Main Container with Canvas & Scrollbar ---
-        canvas = tk.Canvas(parent_tab, highlightthickness=0)
-        scrollbar = ttk.Scrollbar(parent_tab, orient="vertical", command=canvas.yview)
+        canvas = tk.Canvas(parent_tab, highlightthickness=0, bg=self.BG_SOL_COLOR)
+        scrollbar = ttk.Scrollbar(parent_tab, orient="vertical", command=canvas.yview, bootstyle=self.SB_STYLE)
         
         scrollable_frame = ttk.Frame(canvas)
         scrollable_frame.bind(
@@ -500,6 +531,13 @@ class ConfigView(ttk.Toplevel):
         tree_frame.columnconfigure(0, weight=1)
         tree_frame.rowconfigure(0, weight=1)
         
+        # Force tree style updates
+        if "Dark" in config_manager.load_setting("system_theme", "Dark"):
+             style = ttk.Style.get_instance()
+             style.configure('Treeview', background=self.BG_SOL_COLOR, fieldbackground=self.BG_SOL_COLOR, foreground=self.FG_COLOR, bordercolor=self.BORDER_COLOR)
+             style.map('Treeview', background=[('selected', COLOR_ACCENT_BLUE)], foreground=[('selected', 'white')])
+             style.configure('Treeview.Heading', font=(FONT_FAMILY, 9, 'bold'), background="#0a2240", foreground="white")
+
         self.tree = ttk.Treeview(tree_frame, columns=("ID", "Nombre", "RUC", "Dirección", "Nombre Comercial"), show="headings", bootstyle="primary")
         self.tree.heading("ID", text="ID")
         self.tree.heading("Nombre", text="Nombre / Razón Social")
@@ -516,7 +554,8 @@ class ConfigView(ttk.Toplevel):
         # Note: We might not need a scrollbar for the treeview if the whole page scrolls, 
         # but usually it's better to keep the treeview with a fixed height or let it expand.
         # Let's keep the treeview scrollbar for now.
-        tree_scrollbar = ttk.Scrollbar(tree_frame, orient=VERTICAL, command=self.tree.yview)
+        # Let's keep the treeview scrollbar for now.
+        tree_scrollbar = ttk.Scrollbar(tree_frame, orient=VERTICAL, command=self.tree.yview, bootstyle=self.SB_STYLE)
         self.tree.configure(yscrollcommand=tree_scrollbar.set)
         self.tree.grid(row=0, column=0, sticky="nsew")
         tree_scrollbar.grid(row=0, column=1, sticky="ns")
@@ -618,7 +657,9 @@ class ConfigView(ttk.Toplevel):
         self.correlatives_issuer_tree.column("ID", width=40, anchor="center")
         self.correlatives_issuer_tree.column("Nombre", width=200)
         
-        corr_scrollbar = ttk.Scrollbar(issuer_frame, orient=VERTICAL, command=self.correlatives_issuer_tree.yview)
+        self.correlatives_issuer_tree.column("Nombre", width=200)
+        
+        corr_scrollbar = ttk.Scrollbar(issuer_frame, orient=VERTICAL, command=self.correlatives_issuer_tree.yview, bootstyle=self.SB_STYLE)
         self.correlatives_issuer_tree.configure(yscrollcommand=corr_scrollbar.set)
         self.correlatives_issuer_tree.grid(row=0, column=0, sticky="nsew")
         corr_scrollbar.grid(row=0, column=1, sticky="ns")
@@ -637,8 +678,8 @@ class ConfigView(ttk.Toplevel):
         canvas_container.columnconfigure(0, weight=1)
         canvas_container.rowconfigure(0, weight=1)
 
-        canvas = tk.Canvas(canvas_container, highlightthickness=0)
-        scrollbar = ttk.Scrollbar(canvas_container, orient="vertical", command=canvas.yview)
+        canvas = tk.Canvas(canvas_container, highlightthickness=0, bg=self.BG_SOL_COLOR)
+        scrollbar = ttk.Scrollbar(canvas_container, orient="vertical", command=canvas.yview, bootstyle=self.SB_STYLE)
         
         scrollable_frame = ttk.Frame(canvas)
         # Ensure the scrollable frame matches the background
