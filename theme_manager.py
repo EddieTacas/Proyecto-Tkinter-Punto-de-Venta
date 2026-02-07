@@ -92,11 +92,21 @@ COLOR_HEADER_GRADIENT_END = _p.HEADER_GRADIENT_END
 
 COLOR_BG = COLOR_PRIMARY # Alias for generic background
 
-# Modern POS Specific Colors (Requested by User)
-POS_PRIMARY_DARK = "#1a2b4c"
-POS_PRIMARY_LIGHT = "#2a3f6b"
-POS_BG_MAIN = "#f4f6f9"
-POS_BG_WHITE = "#ffffff"
+if CURRENT_THEME_NAME == "Light":
+    POS_PRIMARY_DARK = "#1a2b4c"
+    POS_PRIMARY_LIGHT = "#2a3f6b"
+    POS_BG_MAIN = "#f4f6f9"
+    POS_BG_WHITE = "#ffffff"
+    POS_TEXT_COLOR = "#000000" # New Text Color constant
+else:
+    # Dark Mode mappings
+    POS_PRIMARY_DARK = "#1a2b4c" # Keep header blue-ish or make it dark? User likes the "Dark Navy" style usually.
+    # Let's keep Primary Dark as implies the Brand color.
+    POS_PRIMARY_LIGHT = "#2a3f6b"
+    POS_BG_MAIN = "#181A1B" # Dark Background
+    POS_BG_WHITE = "#252A2E" # Card Background (Dark Gray instead of White)
+    POS_TEXT_COLOR = "#ffffff"
+
 POS_ACCENT_GREEN_START = "#56ab2f"
 POS_ACCENT_GREEN_END = "#a8e063"
 POS_ACCENT_RED = "#d9534f"

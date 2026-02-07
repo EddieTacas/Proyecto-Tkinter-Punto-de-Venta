@@ -460,8 +460,7 @@ class ReportsView(ttk.Toplevel):
         
         # Scrollbar needs to be defined first or packed side right
         # Scrollbar needs to be defined first or packed side right
-        sb_style = "secondary-round" if "Dark" in config_manager.load_setting("system_theme", "Dark") else "default"
-        sales_scrollbar = ttk.Scrollbar(st_frame, orient=VERTICAL, bootstyle=sb_style)
+        sales_scrollbar = ttk.Scrollbar(st_frame, orient=VERTICAL)
         sales_scrollbar.pack(side="right", fill="y")
         
         self.sales_tree = ttk.Treeview(st_frame, columns=("ID", "Tipo", "Número", "Fecha", "Cliente", "TotalOriginal", "TotalFinal", "DescAdic"), show="tree headings", displaycolumns=("Tipo", "Número", "Fecha", "Cliente", "TotalOriginal", "TotalFinal", "DescAdic"), yscrollcommand=sales_scrollbar.set)
@@ -505,8 +504,8 @@ class ReportsView(ttk.Toplevel):
         dt_frame = tk.Frame(details_content, bg=COLOR_SECONDARY_DARK)
         dt_frame.pack(fill="both", expand=True)
 
-        sb_style = "secondary-round" if "Dark" in config_manager.load_setting("system_theme", "Dark") else "default"
-        details_scrollbar = ttk.Scrollbar(dt_frame, orient=VERTICAL, bootstyle=sb_style)
+
+        details_scrollbar = ttk.Scrollbar(dt_frame, orient=VERTICAL)
         details_scrollbar.pack(side="right", fill="y")
 
         self.details_tree = ttk.Treeview(dt_frame, columns=("Producto", "Cantidad", "U.Medida", "Precio", "Subtotal"), show="headings", yscrollcommand=details_scrollbar.set)

@@ -16,7 +16,7 @@ from theme_manager import (
     COLOR_BUTTON_PRIMARY, COLOR_BUTTON_SECONDARY, COLOR_BUTTON_DANGER,
     POS_PRIMARY_DARK, POS_PRIMARY_LIGHT, POS_BG_MAIN, POS_BG_WHITE,
     POS_ACCENT_GREEN_START, POS_ACCENT_GREEN_END, POS_ACCENT_RED, POS_ACCENT_BLUE,
-    POS_GRP_COLORS
+    POS_GRP_COLORS, POS_TEXT_COLOR
 )
 
 # Map to expected names if needed, or use directly
@@ -693,7 +693,7 @@ class SalesTouchView(SalesView):
         group_banner.grid(row=0, column=0, sticky="ew")
         
         # Groups Container (White bg, rounded bottom effect - simulated with frame)
-        groups_container = tk.Frame(left_frame, bg="white") # Tk Frame for white bg
+        groups_container = tk.Frame(left_frame, bg=POS_BG_WHITE) # Tk Frame for white bg
         groups_container.grid(row=1, column=0, sticky="ew", pady=(0, 15), ipady=5)
         
         self.category_frame = ttk.Frame(groups_container, style='White.TFrame') # Transparent in tk frame? Tk frame is bg white.
@@ -720,12 +720,12 @@ class SalesTouchView(SalesView):
         self.scan_var = tk.StringVar()
         
         # Container for visual rounded border
-        search_container = tk.Canvas(search_frame, bg="white", height=45, highlightthickness=0)
+        search_container = tk.Canvas(search_frame, bg=POS_BG_WHITE, height=45, highlightthickness=0)
         search_container.pack(fill="x", ipady=2)
         
         # Draw rounded rect
         # Fix search bar border: Use relief="flat" and explicit bg
-        self.scan_entry = tk.Entry(search_container, textvariable=self.scan_var, font=(FONT_FAMILY, 12), fg="#333", bg="white", borderwidth=0, highlightthickness=0, relief="flat", selectbackground="#e0e0e0", selectforeground="black")
+        self.scan_entry = tk.Entry(search_container, textvariable=self.scan_var, font=(FONT_FAMILY, 12), fg=POS_TEXT_COLOR, bg=POS_BG_WHITE, borderwidth=0, highlightthickness=0, relief="flat", insertbackground=POS_TEXT_COLOR, selectbackground="#e0e0e0", selectforeground="black")
         
         # Place entry inside canvas
         # Store ID for resizing
@@ -744,7 +744,7 @@ class SalesTouchView(SalesView):
             # Create rounded rect image
             img = Image.new("RGBA", (w, h), (0,0,0,0))
             draw = ImageDraw.Draw(img)
-            draw.rounded_rectangle((0, 0, w-1, h-1), radius=20, fill="white", outline="#cccccc", width=2)
+            draw.rounded_rectangle((0, 0, w-1, h-1), radius=20, fill=POS_BG_WHITE, outline="#cccccc", width=2)
             
             self._search_bg_img = ImageTk.PhotoImage(img) # Keep ref
             search_container.create_image(0,0, image=self._search_bg_img, anchor="nw", tags="bg")
@@ -772,15 +772,15 @@ class SalesTouchView(SalesView):
 
         # --- Products (Center - Scrollable, White Background) ---
         # Container for canvas to have white bg
-        products_container_bg = tk.Frame(left_frame, bg="white")
+        products_container_bg = tk.Frame(left_frame, bg=POS_BG_WHITE)
         products_container_bg.grid(row=4, column=0, sticky="nsew")
         products_container_bg.rowconfigure(0, weight=1)
         products_container_bg.columnconfigure(0, weight=1)
 
-        canvas = tk.Canvas(products_container_bg, background="white", highlightthickness=0)
+        canvas = tk.Canvas(products_container_bg, background=POS_BG_WHITE, highlightthickness=0)
         scrollbar = ttk.Scrollbar(products_container_bg, orient="vertical", command=canvas.yview)
         
-        self.product_grid_frame = tk.Frame(canvas, bg="white") # Use Tk Frame for bg white
+        self.product_grid_frame = tk.Frame(canvas, bg=POS_BG_WHITE) # Use Tk Frame for bg white
         
         # 1. Store window_id to resize it
         self.grid_window_id = canvas.create_window((0, 0), window=self.product_grid_frame, anchor="nw")
@@ -816,12 +816,14 @@ class SalesTouchView(SalesView):
         
         # Ensure Borderless Style for Combobox
         style = ttk.Style.get_instance()
-        style.configure('Borderless.TCombobox', borderwidth=0, relief='flat', arrowsize=15)
+        style.configure('Borderless.TCombobox', borderwidth=0, relief='flat', arrowsize=15, foreground=POS_TEXT_COLOR)
         style.map('Borderless.TCombobox', 
-                  fieldbackground=[('readonly','white'), ('active', 'white')],
-                  bordercolor=[('focus', 'white'), ('!disabled', 'white')],
-                  lightcolor=[('focus', 'white'), ('!disabled', 'white')],
-                  darkcolor=[('focus', 'white'), ('!disabled', 'white')])
+                  fieldbackground=[('readonly',POS_BG_WHITE), ('active', POS_BG_WHITE)],
+                  background=[('readonly',POS_BG_WHITE), ('active', POS_BG_WHITE)],
+                  foreground=[('readonly',POS_TEXT_COLOR), ('active', POS_TEXT_COLOR)],
+                  bordercolor=[('focus', POS_BG_WHITE), ('!disabled', POS_BG_WHITE)],
+                  lightcolor=[('focus', POS_BG_WHITE), ('!disabled', POS_BG_WHITE)],
+                  darkcolor=[('focus', POS_BG_WHITE), ('!disabled', POS_BG_WHITE)])
 
         combo = ttk.Combobox(container, textvariable=variable, state="readonly", values=values, style='Borderless.TCombobox', font=(FONT_FAMILY, 12))
         
@@ -846,7 +848,7 @@ class SalesTouchView(SalesView):
                     bg_fill_outer = bg_color
                 else:
                     # simpler fallback
-                    bg_fill_outer = "white" 
+                    bg_fill_outer = POS_BG_WHITE 
                     # If we really want to match system colors (like 'systemWindowBody'), PIL needs RGB.
                     # For now only hex works reliably with this manual method. 
                     # If it's a named color, it might be white.
@@ -858,7 +860,7 @@ class SalesTouchView(SalesView):
             draw = ImageDraw.Draw(img)
             
             # Draw Rounded Rect (White inside, Gray Outline)
-            draw.rounded_rectangle((0, 0, w-1, h-1), radius=15, fill="white", outline="#cccccc", width=1)
+            draw.rounded_rectangle((0, 0, w-1, h-1), radius=15, fill=POS_BG_WHITE, outline="#cccccc", width=1)
             
             bg_img = ImageTk.PhotoImage(img)
             container._bg_img_ref = bg_img 
@@ -882,12 +884,13 @@ class SalesTouchView(SalesView):
         
         # Ensure Borderless Style for Entry
         style = ttk.Style.get_instance()
-        style.configure('Borderless.TEntry', fieldbackground='white', borderwidth=0, relief='flat', highlightthickness=0)
+        style.configure('Borderless.TEntry', fieldbackground=POS_BG_WHITE, foreground=POS_TEXT_COLOR, borderwidth=0, relief='flat', highlightthickness=0)
         style.map('Borderless.TEntry', 
-                  fieldbackground=[('focus','white'), ('!disabled', 'white')],
-                  bordercolor=[('focus', 'white'), ('!disabled', 'white')],
-                  lightcolor=[('focus', 'white'), ('!disabled', 'white')],
-                  darkcolor=[('focus', 'white'), ('!disabled', 'white')])
+                  fieldbackground=[('focus',POS_BG_WHITE), ('!disabled', POS_BG_WHITE)],
+                  foreground=[('focus',POS_TEXT_COLOR), ('!disabled', POS_TEXT_COLOR)],
+                  bordercolor=[('focus', POS_BG_WHITE), ('!disabled', POS_BG_WHITE)],
+                  lightcolor=[('focus', POS_BG_WHITE), ('!disabled', POS_BG_WHITE)],
+                  darkcolor=[('focus', POS_BG_WHITE), ('!disabled', POS_BG_WHITE)])
 
         entry = ttk.Entry(container, textvariable=variable, font=(FONT_FAMILY, 12), style='Borderless.TEntry')
         
@@ -906,7 +909,7 @@ class SalesTouchView(SalesView):
             img = Image.new("RGBA", (w, h), (0,0,0,0))
             draw = ImageDraw.Draw(img)
             # Gray Outline, White fill
-            draw.rounded_rectangle((0, 0, w-1, h-1), radius=15, fill="white", outline="#cccccc", width=1)
+            draw.rounded_rectangle((0, 0, w-1, h-1), radius=15, fill=POS_BG_WHITE, outline="#cccccc", width=1)
             
             bg_img = ImageTk.PhotoImage(img)
             container._bg_img_ref = bg_img 
@@ -937,7 +940,7 @@ class SalesTouchView(SalesView):
         header_row.grid(row=0, column=0, sticky="ew", pady=(0, 15))
         
         # "Empresa" Label
-        ttk.Label(header_row, text="Empresa", font=(FONT_FAMILY, 12, "bold"), foreground="black", background="white", style='Sidebar.TLabel').pack(side="left")
+        ttk.Label(header_row, text="Empresa", font=(FONT_FAMILY, 12, "bold"), foreground=POS_TEXT_COLOR, background=POS_BG_WHITE, style='Sidebar.TLabel').pack(side="left")
         
         # "ARQUEO DE CAJA" Button
         arqueo_btn = GradientButton(header_row, text="ARQUEO DE CAJA", width=150, height=35, 
@@ -959,7 +962,7 @@ class SalesTouchView(SalesView):
         
         # --- Cart (Treeview) ---
         # Container
-        cart_container = tk.Frame(right_frame, bg="white", bd=0) 
+        cart_container = tk.Frame(right_frame, bg=POS_BG_WHITE, bd=0) 
         cart_container.grid(row=2, column=0, sticky="nsew")
         cart_container.rowconfigure(0, weight=1)
         cart_container.columnconfigure(0, weight=1)
@@ -977,8 +980,13 @@ class SalesTouchView(SalesView):
         self.cart_tree.heading("subtotal", text="Total")
         
         # Tags for colors
-        self.cart_tree.tag_configure('oddrow', background='#f2f2f2')
-        self.cart_tree.tag_configure('evenrow', background='white')
+        if POS_BG_WHITE == "#ffffff":
+            self.cart_tree.tag_configure('oddrow', background='#f2f2f2', foreground='black')
+            self.cart_tree.tag_configure('evenrow', background='white', foreground='black')
+        else:
+            # Dark Mode
+            self.cart_tree.tag_configure('oddrow', background='#32383E', foreground='white')
+            self.cart_tree.tag_configure('evenrow', background='#252A2E', foreground='white')
         
         # Fix column widths to prevent automatic expansion affecting layout
         self.cart_tree.column("producto", width=140, minwidth=100, stretch=True) # Product creates width
@@ -1017,7 +1025,7 @@ class SalesTouchView(SalesView):
         items_frame = ttk.Frame(totals_row, style='Sidebar.TFrame')
         items_frame.grid(row=0, column=0, sticky="w")
         ttk.Label(items_frame, text="ITEMS:", font=(FONT_FAMILY, 10, "bold"), foreground="#aaa", style='Sidebar.TLabel').pack(side="left")
-        self.total_items_value = ttk.Label(items_frame, text="0", font=(FONT_FAMILY, 11, "bold"), foreground=POS_PRIMARY_DARK, style='Sidebar.TLabel')
+        self.total_items_value = ttk.Label(items_frame, text="0", font=(FONT_FAMILY, 11, "bold"), foreground=POS_TEXT_COLOR, style='Sidebar.TLabel')
         self.total_items_value.pack(side="left", padx=(5, 0))
 
         # --- DISCOUNT / SURCHARGE ---
@@ -1031,7 +1039,7 @@ class SalesTouchView(SalesView):
         # Construct specific labels.
         self.discount_label_title = ttk.Label(self.frame_discount, text="DSCTO:", font=(FONT_FAMILY, 10, "bold"), foreground="#aaa", style='Sidebar.TLabel')
         self.discount_label_title.pack(side="left")
-        self.discount_value = ttk.Label(self.frame_discount, text="S/ 0.00", font=(FONT_FAMILY, 11, "bold"), foreground=POS_PRIMARY_DARK, style='Sidebar.TLabel')
+        self.discount_value = ttk.Label(self.frame_discount, text="S/ 0.00", font=(FONT_FAMILY, 11, "bold"), foreground=POS_TEXT_COLOR, style='Sidebar.TLabel')
         self.discount_value.pack(side="left", padx=(5, 0))
         
         # Keep reference to surcharge widget just in case logic needs it, but maybe repack it?
@@ -1046,8 +1054,8 @@ class SalesTouchView(SalesView):
         # --- TOTAL ---
         total_frame = ttk.Frame(totals_row, style='Sidebar.TFrame')
         total_frame.grid(row=0, column=2, sticky="e")
-        ttk.Label(total_frame, text="TOTAL:", font=(FONT_FAMILY, 14, "bold"), foreground=POS_PRIMARY_DARK, style='Sidebar.TLabel').pack(side="left", padx=(0, 5))
-        self.total_value = ttk.Label(total_frame, text="S/ 0.00", font=(FONT_FAMILY, 18, "bold"), foreground=POS_PRIMARY_DARK, style='Sidebar.TLabel')
+        ttk.Label(total_frame, text="TOTAL:", font=(FONT_FAMILY, 14, "bold"), foreground=POS_TEXT_COLOR, style='Sidebar.TLabel').pack(side="left", padx=(0, 5))
+        self.total_value = ttk.Label(total_frame, text="S/ 0.00", font=(FONT_FAMILY, 18, "bold"), foreground=POS_TEXT_COLOR, style='Sidebar.TLabel')
         self.total_value.pack(side="left")
 
         # Keep surcharge value ref for safety (updates won't crash)
@@ -1258,10 +1266,17 @@ class SalesTouchView(SalesView):
                     txt_color = "white"
                     border = None
                 else:
-                    c1 = "white"
-                    c2 = "#e0e0e0" # Subtle gradient for inactive 
-                    txt_color = "#333333" # Dark Gray text to match border 
-                    border = "#666666" # Dark Gray border (requested "gris oscuro")
+                    if POS_BG_WHITE == "#ffffff":
+                        c1 = "white"
+                        c2 = "#e0e0e0" 
+                        txt_color = "#333333" 
+                        border = "#666666" 
+                    else:
+                        # Dark Mode Inactive
+                        c1 = POS_BG_WHITE # Dark Gray
+                        c2 = POS_PRIMARY_LIGHT # Slightly different dark
+                        txt_color = "white"
+                        border = "#666666"
 
                 btn = GradientButton(
                     page_container,
@@ -2149,10 +2164,10 @@ class SalesTouchView(SalesView):
         else:
              if hasattr(self, 'discount_label_title'):
                  self.discount_label_title.config(text="DSCTO:")
-             self.discount_value.config(text="S/ 0.00", foreground=POS_PRIMARY_DARK)
+             self.discount_value.config(text="S/ 0.00", foreground=POS_TEXT_COLOR)
 
         # Total Label
-        self.total_value.config(text=f"S/ {self.total:.2f}", foreground=POS_PRIMARY_DARK)
+        self.total_value.config(text=f"S/ {self.total:.2f}", foreground=POS_TEXT_COLOR)
 
         # Apply Shading (Interleaved)
         for i, item_id in enumerate(self.cart_tree.get_children()):

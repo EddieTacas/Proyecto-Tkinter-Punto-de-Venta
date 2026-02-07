@@ -145,9 +145,53 @@ class TouchMovementDialog(ttk.Toplevel):
         
         # Products Grid
         self.products_frame = ttk.Frame(left_frame)
-        # Products Grid
-        self.products_frame = ttk.Frame(left_frame)
-        self.products_frame.grid(row=3, column=0, sticky="nsew")
+        # Products Grid Container (Scrollable)
+        self.products_container = ttk.Frame(left_frame)
+        self.products_container.grid(row=3, column=0, sticky="nsew")
+        
+        # Scrollbar
+        self.chk_scrollbar = ttk.Scrollbar(self.products_container, orient="vertical")
+        self.chk_scrollbar.pack(side="right", fill="y")
+        
+        # Canvas
+        self.products_canvas = tk.Canvas(
+            self.products_container, 
+            bd=0, 
+            highlightthickness=0,
+            yscrollcommand=self.chk_scrollbar.set,
+            bg=COLOR_PRIMARY_DARK # Match parent bg or theme.
+        )
+        self.products_canvas.pack(side="left", fill="both", expand=True)
+        
+        self.chk_scrollbar.config(command=self.products_canvas.yview)
+        
+        # Inner Frame
+        self.products_frame = ttk.Frame(self.products_canvas)
+        self.products_window = self.products_canvas.create_window((0, 0), window=self.products_frame, anchor="nw")
+        
+        # Bindings for Scroll
+        def _on_frame_configure(event):
+            self.products_canvas.configure(scrollregion=self.products_canvas.bbox("all"))
+            
+        def _on_canvas_configure(event):
+            # width = event.width
+            self.products_canvas.itemconfig(self.products_window, width=event.width)
+            
+        self.products_frame.bind("<Configure>", _on_frame_configure)
+        self.products_canvas.bind("<Configure>", _on_canvas_configure)
+        
+        # Mousewheel
+        def _on_mousewheel(event):
+            self.products_canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+            
+        # Bind only when hovering
+        def _bind_mousewheel(event):
+            self.products_canvas.bind_all("<MouseWheel>", _on_mousewheel)
+        def _unbind_mousewheel(event):
+            self.products_canvas.unbind_all("<MouseWheel>")
+            
+        self.products_canvas.bind("<Enter>", _bind_mousewheel)
+        self.products_canvas.bind("<Leave>", _unbind_mousewheel)
         
         # Group Pagination State
         self.current_group_page = 0

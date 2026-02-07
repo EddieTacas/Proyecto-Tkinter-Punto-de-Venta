@@ -1114,20 +1114,39 @@ class MovementsView(ttk.Toplevel):
             price = item[3]
             sub = item[4]
             
-            # Line 1: Description (Left aligned, no indent)
-            desc_lines = textwrap.wrap(name, width=WIDTH)
-            for line in desc_lines:
+            # Check Format
+            print_format = config_manager.load_setting("print_format_nv", "APISUNAT")
+            
+            if print_format == "NUMIER":
+                # Single Line: Name(18) Qty(5) Price(7) Sub(8)
+                # Truncate Name
+                name_short = name[:18]
+                
+                # Format: "Name...  Qty   Price   Sub"
+                # Use f-string width: 
+                # {name:<19} {qty:>5.2f} {price:>7.2f} {sub:>8.2f}
+                # 19 + 1 + 5 + 1 + 7 + 1 + 8 = 42?
+                # Let's try to fit 42
+                
+                line = f"{name_short:<18} {qty:>5.2f} {price:>7.2f} {sub:>7.2f}"
                 self.ticket_preview.insert(tk.END, line + "\n", "left")
                 
-            # Line 2: Qty/UM Price Subtotal (Centered, fixed widths)
-            qty_um = f"{qty:.2f} {um[:3]}"
-            price_str = f"{price:.2f}"
-            sub_str = f"{sub:.2f}"
-            
-            # Logic from reports_view.py: center(16) + rjust(10) + rjust(16) = 42 chars
-            l2_str = f"{qty_um}".center(16) + f"{price_str}".rjust(10) + f"{sub_str}".rjust(16)
-            
-            self.ticket_preview.insert(tk.END, l2_str + "\n", "center")
+            else:
+                # APISUNAT (Default): 2 Lines
+                # Line 1: Description (Left aligned, no indent)
+                desc_lines = textwrap.wrap(name, width=WIDTH)
+                for line in desc_lines:
+                    self.ticket_preview.insert(tk.END, line + "\n", "left")
+                    
+                # Line 2: Qty/UM Price Subtotal (Centered, fixed widths)
+                qty_um = f"{qty:.2f} {um[:3]}"
+                price_str = f"{price:.2f}"
+                sub_str = f"{sub:.2f}"
+                
+                # Logic from reports_view.py: center(16) + rjust(10) + rjust(16) = 42 chars
+                l2_str = f"{qty_um}".center(16) + f"{price_str}".rjust(10) + f"{sub_str}".rjust(16)
+                
+                self.ticket_preview.insert(tk.END, l2_str + "\n", "center")
             # Removed dotted separator as requested
             
         # --- TOTAL ---
@@ -1223,22 +1242,34 @@ class MovementsView(ttk.Toplevel):
             price = item[3]
             sub = item[4]
             
-            # Line 1: Description (Left aligned, no indent)
-            buffer.extend(ALIGN_LEFT)
-            desc_lines = textwrap.wrap(name, width=42) 
-            for line in desc_lines:
+            # Check Format
+            print_format = config_manager.load_setting("print_format_nv", "APISUNAT")
+            
+            if print_format == "NUMIER":
+                # Single Line
+                buffer.extend(ALIGN_LEFT)
+                name_short = name[:18]
+                line = f"{name_short:<18} {qty:>5.2f} {price:>7.2f} {sub:>7.2f}"
                 buffer.extend(text(line + "\n"))
                 
-            # Line 2: Qty/UM Price Subtotal (Centered visually but using spaces)
-            qty_um = f"{qty:.2f} {um[:3]}"
-            price_str = f"{price:.2f}"
-            sub_str = f"{sub:.2f}"
-            
-            l2_str = f"{qty_um}".center(16) + f"{price_str}".rjust(10) + f"{sub_str}".rjust(16)
-            
-            buffer.extend(ALIGN_CENTER) 
-            
-            buffer.extend(text(l2_str + "\n"))
+            else:
+                # APISUNAT (Default: 2 lines)
+                # Line 1: Description (Left aligned, no indent)
+                buffer.extend(ALIGN_LEFT)
+                desc_lines = textwrap.wrap(name, width=42) 
+                for line in desc_lines:
+                    buffer.extend(text(line + "\n"))
+                    
+                # Line 2: Qty/UM Price Subtotal (Centered visually but using spaces)
+                qty_um = f"{qty:.2f} {um[:3]}"
+                price_str = f"{price:.2f}"
+                sub_str = f"{sub:.2f}"
+                
+                l2_str = f"{qty_um}".center(16) + f"{price_str}".rjust(10) + f"{sub_str}".rjust(16)
+                
+                buffer.extend(ALIGN_CENTER) 
+                
+                buffer.extend(text(l2_str + "\n"))
             # Removed dotted separator as requested
             
         buffer.extend(text("-" * 42 + "\n"))

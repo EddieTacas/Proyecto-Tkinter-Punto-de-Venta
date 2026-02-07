@@ -541,7 +541,8 @@ class InventoryView(ttk.Toplevel):
         NAVY_SOLID = '#0a2240'
         FOOTER_END_BLUE = '#007bff'
         
-        self.print_btn = GradientButton(footer, text="🖨 Imprimir", icon="", color1=NAVY_SOLID, color2=NAVY_SOLID, command=self.print_inventory, height=35, width=120, bg=FOOTER_END_BLUE, corner_radius=0)
+        self.print_btn = ttk.Button(footer, text="🖨 Imprimir", command=self.print_inventory, bootstyle="primary")
+        # self.print_btn = GradientButton(footer, text="🖨 Imprimir", icon="", color1=NAVY_SOLID, color2=NAVY_SOLID, command=self.print_inventory, height=35, width=120, bg=FOOTER_END_BLUE, corner_radius=0)
         
         def place_button(event):
              w = footer.winfo_width()
@@ -1450,11 +1451,24 @@ class InventoryView(ttk.Toplevel):
         buffer.extend(text("-" * 42 + "\n"))
         
         # --- ITEMS ---
-        # Header: PRODUCTO (Left), STOCK (Right), PRECIO (Right)
-        # Using 42 chars width for 80mm
-        # PRODUCTO (22) | STOCK (10) | PRECIO (10)
-        header = "PRODUCTO              STOCK     PRECIO"
-        buffer.extend(BOLD_ON + text(header + "\n") + BOLD_OFF)
+        # --- ITEMS ---
+        # --- ITEMS ---
+        print_format_raw = config_manager.load_setting("print_format_nv", "APISUNAT")
+        print_format = str(print_format_raw).strip().upper()
+        print(f"DEBUG: Inventory Ticket Format: '{print_format}'")
+        # messagebox.showinfo("DEBUG", f"Format Detected: '{print_format}'\nRaw: '{print_format_raw}'", parent=self)
+
+        if print_format == "NUMIER":
+             # Header: PRODUCTO (Left), STOCK (Right), PRECIO (Right)
+            # Using 42 chars width for 80mm
+            # PRODUCTO (22) | STOCK (10) | PRECIO (10)
+            header = "PRODUCTO              STOCK     PRECIO"
+            buffer.extend(BOLD_ON + text(header + "\n") + BOLD_OFF)
+        else:
+            # Default to APISUNAT
+            header = "PRODUCTO / DETALLE"
+            buffer.extend(BOLD_ON + text(header + "\n") + BOLD_OFF)
+            buffer.extend(text("STOCK       PRECIO      VALORIZADO\n")) # Subheader
         buffer.extend(text("-" * 42 + "\n"))
         
         total_products = 0
@@ -1481,21 +1495,41 @@ class InventoryView(ttk.Toplevel):
             except ValueError:
                 pass
                 
-            buffer.extend(ALIGN_LEFT)
+            # Retrieve format again or reuse loop variable - safer to check robustly again or move out
+            # We already defined 'print_format' above correctly.
             
-            # Name wrapping
-            name_lines = textwrap.wrap(name, width=22)
-            
-            # Print first line with stock and price
-            line1_name = name_lines[0]
-            
-            # Format: Name(22) + Stock(10) + Price(10)
-            line = f"{line1_name:<22}{stock_str:>10}{price_str:>10}"
-            buffer.extend(text(line + "\n"))
-            
-            # Print remaining name lines
-            for extra_line in name_lines[1:]:
-                buffer.extend(text(f"{extra_line:<22}\n"))
+            if print_format == "NUMIER":
+                # NUMIER (Legacy): 1 Line
+                # Name(22) Stock(10) Price(10) - No Valorizado in line 1 as per original
+                
+                buffer.extend(ALIGN_LEFT)
+                
+                # Name wrapping
+                name_lines = textwrap.wrap(name, width=22)
+                
+                # Print first line with stock and price
+                line1_name = name_lines[0]
+                
+                # Format: Name(22) + Stock(10) + Price(10)
+                line = f"{line1_name:<22}{stock_str:>10}{price_str:>10}"
+                buffer.extend(text(line + "\n"))
+                
+                # Print remaining name lines
+                for extra_line in name_lines[1:]:
+                    buffer.extend(text(f"{extra_line:<22}\n"))
+                    
+            else:
+                # APISUNAT (Default): 2 Lines
+                # Line 1: Full Name wrapped
+                buffer.extend(ALIGN_LEFT)
+                name_lines = textwrap.wrap(name, width=42)
+                for line in name_lines:
+                    buffer.extend(text(line + "\n"))
+                    
+                # Line 2: Stock, Price, Valorizado
+                # Format: "S: {stock}  P: {price}  V: {val}"
+                l2 = f"S:{stock_str}  P:{price_str}  V:{valorizado_str}"
+                buffer.extend(text(l2 + "\n"))
                 
         buffer.extend(text("-" * 42 + "\n"))
         

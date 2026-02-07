@@ -77,10 +77,28 @@ python -m PyInstaller --noconsole ^
 if %errorlevel% neq 0 (
     echo.
     echo.
-    echo [ERROR] Ocurrió un error durante la compilación.
+    echo [ERROR] Ocurrió un error durante la compilación de SistemaVentas.
     pause
     exit /b
 )
+
+:: 5. Compilar Updater
+echo.
+echo [INFO] Compilando Updater...
+python -m PyInstaller --noconsole --onefile --name=Updater --distpath dist/SistemaVentas updater.py
+
+if %errorlevel% neq 0 (
+    echo.
+    echo.
+    echo [ERROR] Ocurrió un error durante la compilación de Updater.
+    pause
+    exit /b
+)
+
+:: 6. Copiar version.json
+echo.
+echo [INFO] Copiando version.json...
+copy version.json "dist\SistemaVentas\" >nul
 
 echo.
 echo ===================================================
